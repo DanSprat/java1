@@ -7,4 +7,8 @@ public class Hamster extends Animal {
         Akind = AnimalKind.HAMSTER;
         Fkind = FoodKind.CORN;
     }
+    @Override
+    public double getFoodCoeff(){return 0.03;}
+
+
 }

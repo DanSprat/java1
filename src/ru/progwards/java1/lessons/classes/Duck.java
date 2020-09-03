@@ -6,5 +6,5 @@ public class Duck extends Animal {
         Akind= AnimalKind.DUCK;
         Fkind = FoodKind.CORN;
     }
-
+    public double getFoodCoeff(){return 0.04;}
 }

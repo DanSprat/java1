@@ -7,5 +7,7 @@ public class Cow extends Animal{
         Akind = AnimalKind.COW;
         Fkind = FoodKind.HAY;
     }
-    
+    @Override
+    public double getFoodCoeff(){return 0.05;}
+
 }
