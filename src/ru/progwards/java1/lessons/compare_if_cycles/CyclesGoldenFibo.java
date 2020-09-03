@@ -1,6 +1,8 @@
 package ru.progwards.java1.lessons.compare_if_cycles;
 public class CyclesGoldenFibo {
     public static boolean containsDigit(int number, int digit){
+        if (number == 0)
+            return number==digit;
         for (;number>0;number/=10)
         {
             if (number % 10 == digit)
