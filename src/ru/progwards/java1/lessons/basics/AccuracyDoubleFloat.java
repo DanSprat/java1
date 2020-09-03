@@ -10,7 +10,6 @@ public class AccuracyDoubleFloat {
     public static double calculateAccuracy(double radius){
         return volumeBallDouble(radius)-volumeBallFloat((float)radius);
     }
-
     public static void main(String[] args) {
         System.out.println(volumeBallDouble(1.0));
         System.out.println(volumeBallFloat(1.0f));
