@@ -4,7 +4,7 @@ enum FoodKind {UNKNOWN, HAY, CORN;}
 public class Animal {
     protected double weight;
     protected AnimalKind Akind = AnimalKind.ANIMAL;
-    protected FoodKind Fkind;
+    protected FoodKind Fkind=FoodKind.UNKNOWN;
     public Animal(double weight){
         this.weight = weight;
     }
