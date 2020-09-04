@@ -17,7 +17,7 @@ public class Binary {
     }
 
     public static void main(String[] args) {
-        Binary binary = new Binary((byte)15);
+        Binary binary = new Binary((byte)0);
         System.out.println(binary.toString());
     }
 }
