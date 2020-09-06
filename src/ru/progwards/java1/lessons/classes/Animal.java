@@ -1,7 +1,7 @@
 package ru.progwards.java1.lessons.classes;
 enum AnimalKind  {ANIMAL, COW, HAMSTER, DUCK;}
 enum FoodKind {UNKNOWN, HAY, CORN;}
-public abstract class  Animal implements FoodCompare{
+public class Animal implements FoodCompare{
     @Override
     public boolean equals(Object anObject){
         if (this == anObject) return true;
@@ -21,9 +21,8 @@ public abstract class  Animal implements FoodCompare{
     public double getFoodPrice() {
        return calculateFoodWeight() * getFood1kgPrice();
     }
-    @Override
     public int compareFoodPrice(Animal aminal){
-        return  Double.compare(getFoodPrice(),aminal.getFood1kgPrice());
+        return  Double.compare(getFoodPrice(),aminal.getFoodPrice());
     }
     protected double weight;
     protected AnimalKind Akind = AnimalKind.ANIMAL;

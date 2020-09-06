@@ -10,5 +10,4 @@ public class Hamster extends Animal {
     @Override
     public double getFoodCoeff(){return 0.03;}
 
-
 }
