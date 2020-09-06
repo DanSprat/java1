@@ -1,7 +1,30 @@
 package ru.progwards.java1.lessons.classes;
 enum AnimalKind  {ANIMAL, COW, HAMSTER, DUCK;}
 enum FoodKind {UNKNOWN, HAY, CORN;}
-public class Animal {
+public abstract class  Animal implements FoodCompare{
+    @Override
+    public boolean equals(Object anObject){
+        if (this == anObject) return true;
+        if (anObject == null || getClass() !=anObject.getClass()) return false;
+        Animal animal = (Animal) anObject;
+        if (weight == animal.weight) return true;
+        return false;
+    }
+    public double getFood1kgPrice() {
+        switch (Fkind){
+            case HAY: return 20;
+            case CORN: return 50;
+            case UNKNOWN: return 0;
+            default: return 0;
+        }
+    }
+    public double getFoodPrice() {
+       return calculateFoodWeight() * getFood1kgPrice();
+    }
+    @Override
+    public int compareFoodPrice(Animal aminal){
+        return  Double.compare(getFoodPrice(),aminal.getFood1kgPrice());
+    }
     protected double weight;
     protected AnimalKind Akind = AnimalKind.ANIMAL;
     protected FoodKind Fkind=FoodKind.UNKNOWN;
