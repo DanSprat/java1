@@ -3,7 +3,7 @@ package ru.progwards.java1.lessons.interfaces;
 public class Food implements CompareWeight{
     private int weight;
     public int getWeight(){return weight;}
-
+    public Food(int weight) {this.weight = weight;}
 
     @Override
     public CompareResult compareWeight(CompareWeight smthHasWeigt) {
