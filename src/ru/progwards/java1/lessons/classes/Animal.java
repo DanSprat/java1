@@ -1,7 +1,10 @@
 package ru.progwards.java1.lessons.classes;
+
+import ru.progwards.java1.lessons.interfaces.CompareWeight;
+
 enum AnimalKind  {ANIMAL, COW, HAMSTER, DUCK;}
 enum FoodKind {UNKNOWN, HAY, CORN;}
-public class Animal implements FoodCompare{
+public class Animal implements FoodCompare, CompareWeight {
     @Override
     public boolean equals(Object anObject){
         if (this == anObject) return true;
@@ -24,6 +27,14 @@ public class Animal implements FoodCompare{
     public int compareFoodPrice(Animal aminal){
         return  Double.compare(getFoodPrice(),aminal.getFoodPrice());
     }
+    @Override
+    public CompareResult compareWeight(CompareWeight smthHasWeigt) {
+        Animal animal = (Animal) smthHasWeigt;
+        if (weight <animal.weight) return CompareResult.LESS;
+        else if (weight>animal.weight) return CompareResult.GREATER;
+        else return CompareResult.EQUAL;
+
+    }
     protected double weight;
     protected AnimalKind Akind = AnimalKind.ANIMAL;
     protected FoodKind Fkind=FoodKind.UNKNOWN;
@@ -38,6 +49,9 @@ public class Animal implements FoodCompare{
     public String toStringFull(){return "I am "+Akind+", eat "+Fkind+" "+calculateFoodWeight();}
     public String toString(){return "I am "+Akind+", eat "+Fkind;}
     public static void main(String[] args) {
+        Animal a = new Animal(10);
         System.out.println(new Duck(20).toStringFull());
     }
+
+
 }
