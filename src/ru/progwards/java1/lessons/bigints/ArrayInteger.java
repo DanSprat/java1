@@ -35,8 +35,8 @@ public class ArrayInteger {
                 digits[i] = (byte) ((num.digits[i] + digits[i])%10);
 
             }
-            if (max!=LastIndex){
-                digits[max+1] =(byte)((digits[max+1]+num.digits[max+1])/10);
+            if (max!=digits.length-1){
+                digits[max+1] =(byte)(digits[max+1]+ ((num.digits[max] + digits[max])/10));
                 digits[max] = (byte) ((num.digits[max] + digits[max])%10);
 
                 LastIndex++;
@@ -54,10 +54,10 @@ public class ArrayInteger {
 
     }
     public static void main(String[] args) {
-        ArrayInteger arrayInteger = new ArrayInteger(3);
-        ArrayInteger arrayInteger1 = new ArrayInteger(3);
-        arrayInteger.fromInt(new BigInteger("990"));
-        arrayInteger1.fromInt(new BigInteger("10"));
+        ArrayInteger arrayInteger = new ArrayInteger(10);
+        ArrayInteger arrayInteger1 = new ArrayInteger(10);
+        arrayInteger.fromInt(new BigInteger("934"));
+        arrayInteger1.fromInt(new BigInteger("100"));
         System.out.println(arrayInteger.add(arrayInteger1));
         System.out.println(arrayInteger.toInt());
 
