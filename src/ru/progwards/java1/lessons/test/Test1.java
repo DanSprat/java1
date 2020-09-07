@@ -1,5 +1,6 @@
 package ru.progwards.java1.lessons.test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class Test1 {
@@ -14,5 +15,8 @@ public class Test1 {
         Arrays.sort(a2);
         System.out.println(Arrays.equals(a1, a2));
         System.out.println(ret((byte)15));
+        BigDecimal a = new BigDecimal("10.0");
+        BigDecimal b = new BigDecimal("10.0");
+        System.out.println(a.multiply(b).compareTo(a.multiply(b)));
     }
 }
