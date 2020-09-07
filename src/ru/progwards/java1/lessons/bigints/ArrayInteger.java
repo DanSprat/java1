@@ -23,42 +23,47 @@ public class ArrayInteger {
         return new BigInteger(str);
     }
     boolean add(ArrayInteger num){
-        int max = Integer.max(LastIndex,num.LastIndex);
-        if (max > digits.length-1){
-            for (int i =0;i<=LastIndex;++i)
-                digits[i]=0;
-            return false;
-        }
-        else
-            for(int i =0;i<max;++i){
-                digits[i+1] =(byte) (digits[i+1]+ ((num.digits[i] + digits[i])/10));
-                digits[i] = (byte) ((num.digits[i] + digits[i])%10);
+     if (num.LastIndex >= digits.length){
+         for(int i =0;i<digits.length;i++)
+             digits[i]=0;
+         LastIndex =0;
+         return false;
+     }
+     int max = Integer.max(LastIndex,num.LastIndex);
+     byte result;
+     for (int i =0;i<max;++i){
+         result =  (byte) (digits[i] + num.digits[i]);
+         if (result >=10)
+             digits[i+1]++;
+         digits[i] = (byte)(result%10);
+     }
+        result =  (byte) (digits[max] + num.digits[max]);
+     if (result>=10) {
+         if (max >= digits.length - 1) {
+             for (int i = 0; i < digits.length; i++)
+                 digits[i] = 0;
+             LastIndex=0;
+             return false;
+         } else {
+             LastIndex = max + 1;
+             digits[max] = (byte) (result % 10);
+             digits[max + 1]++;
+             return true;
+         }
+     }
+     else {
+      digits[max] = result;
+      LastIndex=max;
+      return true;
+     }
 
-            }
-            if (max!=digits.length-1){
-                digits[max+1] =(byte)(digits[max+1]+ ((num.digits[max] + digits[max])/10));
-                digits[max] = (byte) ((num.digits[max] + digits[max])%10);
-
-                LastIndex++;
-                return true;
-            }
-            else if (num.digits[max] + digits[max] <10){
-                digits[max] = (byte) ((num.digits[max] + digits[max])%10);
-                LastIndex++;
-                return true;
-            }
-            else {
-                for (int i =0;i<=LastIndex;++i)
-                    digits[i]=0;
-                    return false;
-            }
 
     }
     public static void main(String[] args) {
         ArrayInteger arrayInteger = new ArrayInteger(3);
         ArrayInteger arrayInteger1 = new ArrayInteger(3);
         arrayInteger.fromInt(new BigInteger("10"));
-        arrayInteger1.fromInt(new BigInteger("989"));
+        arrayInteger1.fromInt(new BigInteger("999"));
         System.out.println(arrayInteger.add(arrayInteger1));
         System.out.println(arrayInteger.toInt());
 
