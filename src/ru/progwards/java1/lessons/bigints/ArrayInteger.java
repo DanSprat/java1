@@ -54,6 +54,7 @@ public class ArrayInteger {
             LastIndex = 0;
             return false;
         }
+        LastIndex = Integer.max(LastIndex,num.LastIndex);
 return true;
     }
     public static void main(String[] args) {
