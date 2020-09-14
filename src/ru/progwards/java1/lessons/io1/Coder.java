@@ -13,10 +13,12 @@ public class Coder {
             try {
                 Scanner scanner = new Scanner(fileReader);
                 String str ="";
-                while (scanner.hasNextLine())
-                    str+=scanner.nextLine();
-                for (int i = 0; i < str.length(); ++i) {
-                    fileWriter.write(code[(int) str.charAt(i)]);
+                while (scanner.hasNextLine()) {
+                    str=scanner.nextLine();
+                    for (int i = 0; i < str.length(); ++i) {
+                        fileWriter.write(code[(int) str.charAt(i)]);
+                    }
+                    fileWriter.write('\n');
                 }
             } finally {
                 fileReader.close();
@@ -33,7 +35,8 @@ public class Coder {
         }
     }
     public static void main(String[] args) throws IOException{
-        char [] a = {'c'};
-        codeFile("s","s1",a,"????");
+        System.out.println((char)1);
+        char [] a = {'c','a'};
+        codeFile("s","s1",a,"s2");
     }
 }
