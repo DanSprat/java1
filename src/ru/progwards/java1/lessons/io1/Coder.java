@@ -35,8 +35,10 @@ public class Coder {
         }
     }
     public static void main(String[] args) throws IOException{
-        System.out.println((char)1);
-        char [] a = {'c','a'};
+        char a[]= new char[65536];
+        for (int i =0;i<65536;i++){
+            a[i] = (char)(i+1);
+        }
         codeFile("s","s1",a,"s2");
     }
 }
