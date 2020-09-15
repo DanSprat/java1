@@ -18,12 +18,12 @@ public class Coder {
                 while (scanner.hasNextLine()) {
                     str=scanner.nextLine();
                     for (int i = 0; i < str.length(); ++i) {
-                        if (str.charAt(i)!=' ')
+                        /*if (str.charAt(i)!=' ')
                            fileWriter.write(code[(int) str.charAt(i)]);
                         else
-                            fileWriter.write(' ');
+                            fileWriter.write(' ');*/
+                        fileWriter.write(code[(int) str.charAt(i)]);
                     }
-                   // fileWriter.write('\n');
                 }
             } finally {
                 fileReader.close();
