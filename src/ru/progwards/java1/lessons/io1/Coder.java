@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Coder {
-    public static void codeFile(String inFileName, String outFileName, char[] code, String logName)throws IOException {
+    public static void codeFile(String inFileName, String outFileName, char[] code, String logName) throws IOException {
         FileReader fileReader = null;
         FileWriter fileWriter =null;
         try {
@@ -27,18 +27,14 @@ public class Coder {
                 fileWriter.close();
             }
         } catch (Exception e) {
+            FileWriter fileWriter2 = new FileWriter(logName);
             try {
-                FileWriter fileWriter2 = new FileWriter(logName);
                 fileWriter2.write(e.getMessage());
-                fileWriter2.close();
             } catch (Exception e1) {
                 System.err.println(e1.getMessage());
+            } finally {
+                fileWriter2.close();
             }
-        } finally {
-            if (fileReader !=null)
-                fileReader.close();
-            if(fileWriter!=null)
-                fileWriter.close();
         }
     }
     public static void main(String[] args) throws IOException{
