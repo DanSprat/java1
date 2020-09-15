@@ -8,40 +8,35 @@ import java.util.Scanner;
 
 public class Coder {
     public static void codeFile(String inFileName, String outFileName, char[] code, String logName) throws IOException {
-        FileReader fileReader = null;
-        FileWriter fileWriter = null;
+        FileReader fileReader;
+        FileWriter fileWriter;
         try {
             fileReader = new FileReader(inFileName);
             fileWriter = new FileWriter(outFileName);
-            Scanner scanner = new Scanner(fileReader);
-            String str;
-            while(scanner.hasNextLine()){
-                str=scanner.nextLine();
-                for(int i=0;i<str.length();i++)
-                fileWriter.write(code[(int)str.charAt(i)]);
-            }
-        } catch (Exception e){
-            FileWriter fileWriterLog = new FileWriter(logName);
             try {
-                fileWriterLog.write(e.getMessage());
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
+                Scanner scanner = new Scanner(fileReader);
+                String str ="";
+                while (scanner.hasNextLine()) {
+                    str=scanner.nextLine();
+                    for (int i = 0; i < str.length(); ++i) {
+                        if (str.charAt(i)!=' ')
+                            fileWriter.write(code[(int) str.charAt(i)]);
+                        else
+                            fileWriter.write(' ');
+                    }
+                    fileWriter.write('\n');
+                }
             } finally {
-                fileWriterLog.close();
-            }
-        } finally {
-            try {
                 fileReader.close();
                 fileWriter.close();
-            } catch (Exception e){
-                FileWriter fileWriterLog = new FileWriter(logName);
-                try {
-                    fileWriterLog.write(e.getMessage());
-                } catch (Exception ex) {
-                    System.err.println(ex.getMessage());
-                } finally {
-                    fileWriterLog.close();
-                }
+            }
+        } catch (Exception e) {
+            try {
+                FileWriter fileWriter2 = new FileWriter(logName);
+                fileWriter2.write(e.getMessage());
+                fileWriter2.close();
+            } catch (Exception e1) {
+                System.err.println(e1.getMessage());
             }
         }
     }
