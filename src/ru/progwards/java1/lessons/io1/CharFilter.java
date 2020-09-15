@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class CharFilter {
     public static void filterFile(String inFileName, String outFileName, String filter) throws IOException {
+        filter +="—";
         FileReader fileReader = null;
         FileWriter fileWriter = null;
         try {
@@ -38,7 +39,9 @@ public class CharFilter {
     }
 
     public static void main(String[] args) throws IOException{
-        String str =  " -,.()";
+        String str =  " -—,.()";
+        for (int i=0;i<str.length();++i)
+            System.out.println((int)str.charAt(i));
         filterFile("s","s1",str);
     }
 }
