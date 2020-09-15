@@ -7,21 +7,18 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Coder {
-    public static void codeFile(String inFileName, String outFileName, char[] code, String logName) {
+    public static void codeFile(String inFileName, String outFileName, char[] code, String logName)throws IOException {
         FileReader fileReader = null;
+        FileWriter fileWriter =null;
         try {
             fileReader = new FileReader(inFileName);
-            FileWriter fileWriter = new FileWriter(outFileName);
+            fileWriter = new FileWriter(outFileName);
             try {
                 Scanner scanner = new Scanner(fileReader);
-                String str ="";
+                String str;
                 while (scanner.hasNextLine()) {
                     str=scanner.nextLine();
                     for (int i = 0; i < str.length(); ++i) {
-                        /*if (str.charAt(i)!=' ')
-                           fileWriter.write(code[(int) str.charAt(i)]);
-                        else
-                            fileWriter.write(' ');*/
                         fileWriter.write(code[(int) str.charAt(i)]);
                     }
                 }
@@ -31,12 +28,17 @@ public class Coder {
             }
         } catch (Exception e) {
             try {
-                FileWriter fileWriter = new FileWriter(logName);
-                fileWriter.write(e.getMessage());
-                fileWriter.close();
+                FileWriter fileWriter2 = new FileWriter(logName);
+                fileWriter2.write(e.getMessage());
+                fileWriter2.close();
             } catch (Exception e1) {
                 System.err.println(e1.getMessage());
             }
+        } finally {
+            if (fileReader !=null)
+                fileReader.close();
+            if(fileWriter!=null)
+                fileWriter.close();
         }
     }
     public static void main(String[] args) throws IOException{
