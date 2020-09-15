@@ -21,7 +21,8 @@ public class CharFilter {
                     for (int j = 0; j < filter.length(); ++j) {
                         if (filter.charAt(j) == str.charAt(i))
                             break;
-                        fileWriter.write(str.charAt(i));
+                        if (j == filter.length()-1)
+                            fileWriter.write(str.charAt(i));
                     }
                 }
                 fileWriter.write('\n');
@@ -37,8 +38,7 @@ public class CharFilter {
     }
 
     public static void main(String[] args) throws IOException{
-        System.out.println("Привет");
-        String str = " ";
+        String str =  " -,.()";
         filterFile("s","s1",str);
     }
 }
