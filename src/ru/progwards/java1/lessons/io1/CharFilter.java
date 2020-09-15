@@ -16,7 +16,12 @@ public class CharFilter {
             fileWriter = new FileWriter(outFileName);
             Scanner scanner = new Scanner(fileReader);
             String str;
+            boolean isFirst=true;
             while (scanner.hasNextLine()) {
+                if (!isFirst)
+                    fileWriter.write('\n');
+                else
+                    isFirst = false;
                 str = scanner.nextLine();
                 for (int i = 0; i < str.length(); ++i) {
                     for (int j = 0; j < filter.length(); ++j) {
@@ -26,7 +31,6 @@ public class CharFilter {
                             fileWriter.write(str.charAt(i));
                     }
                 }
-                //fileWriter.write('\n');
             }
         } catch (IOException e) {
             throw new IOException();
