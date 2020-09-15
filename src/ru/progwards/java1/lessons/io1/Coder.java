@@ -8,9 +8,10 @@ import java.util.Scanner;
 
 public class Coder {
     public static void codeFile(String inFileName, String outFileName, char[] code, String logName) {
+        FileReader fileReader = null;
         try {
-            FileReader fileReader = new FileReader(inFileName);
-            FileOutputStream fileWriter = new FileOutputStream(outFileName);
+            fileReader = new FileReader(inFileName);
+            FileWriter fileWriter = new FileWriter(outFileName);
             try {
                 Scanner scanner = new Scanner(fileReader);
                 String str ="";
