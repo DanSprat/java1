@@ -30,8 +30,19 @@ public class Coder {
                 fileWriterLog.close();
             }
         } finally {
-            fileReader.close();
-            fileWriter.close();
+            try {
+                fileReader.close();
+                fileWriter.close();
+            } catch (Exception e){
+                FileWriter fileWriterLog = new FileWriter(logName);
+                try {
+                    fileWriterLog.write(e.getMessage());
+                } catch (Exception ex) {
+                    System.err.println(ex.getMessage());
+                } finally {
+                    fileWriterLog.close();
+                }
+            }
         }
     }
     public static void main(String[] args) throws IOException{
