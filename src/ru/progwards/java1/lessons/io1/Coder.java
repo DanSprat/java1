@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Coder {
-    public static void codeFile(String inFileName, String outFileName, char[] code, String logName) throws IOException {
+    public static void codeFile(String inFileName, String outFileName, char[] code, String logName) {
         FileReader fileReader;
         FileWriter fileWriter;
         try {
