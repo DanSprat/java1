@@ -16,15 +16,16 @@ public class Coder {
             try {
                 Scanner scanner = new Scanner(fileReader);
                 String str ="";
+                boolean isFirst=true;
                 while (scanner.hasNextLine()) {
+                    if (!isFirst)
+                        fileWriter.write('\n');
+                    else
+                        isFirst = false;
                     str=scanner.nextLine();
                     for (int i = 0; i < str.length(); ++i) {
-                        if (str.charAt(i)!=' ')
                             fileWriter.write(code[(int) str.charAt(i)]);
-                        else
-                            fileWriter.write(' ');
                     }
-                    fileWriter.write('\n');
                 }
             } finally {
                 fileReader.close();
