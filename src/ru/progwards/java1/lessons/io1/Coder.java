@@ -23,7 +23,7 @@ public class Coder {
                         else
                             fileWriter.write(' ');
                     }
-                    fileWriter.write('\n');
+                   // fileWriter.write('\n');
                 }
             } finally {
                 fileReader.close();
