@@ -1,5 +1,6 @@
 package ru.progwards.java1.lessons.io1;
 
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,14 +10,17 @@ public class Coder {
     public static void codeFile(String inFileName, String outFileName, char[] code, String logName) {
         try {
             FileReader fileReader = new FileReader(inFileName);
-            FileWriter fileWriter = new FileWriter(outFileName);
+            FileOutputStream fileWriter = new FileOutputStream(outFileName);
             try {
                 Scanner scanner = new Scanner(fileReader);
                 String str ="";
                 while (scanner.hasNextLine()) {
                     str=scanner.nextLine();
                     for (int i = 0; i < str.length(); ++i) {
-                        fileWriter.write(code[(int) str.charAt(i)]);
+                        if (str.charAt(i)!=' ')
+                           fileWriter.write(code[(int) str.charAt(i)]);
+                        else
+                            fileWriter.write(' ');
                     }
                     fileWriter.write('\n');
                 }
