@@ -1,31 +1,19 @@
 package ru.progwards.java1.lessons.io1;
 
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Coder {
     public static void codeFile(String inFileName, String outFileName, char[] code, String logName) {
-        FileReader fileReader;
+        FileInputStream fileReader;
         FileWriter fileWriter;
         try {
-            fileReader = new FileReader(inFileName);
+            fileReader = new  FileInputStream(inFileName);
             fileWriter = new FileWriter(outFileName);
             try {
-                Scanner scanner = new Scanner(fileReader);
-                String str ="";
-                boolean isFirst=true;
-                while (scanner.hasNextLine()) {
-                    if (!isFirst)
-                        fileWriter.write('\n');
-                    else
-                        isFirst = false;
-                    str=scanner.nextLine();
-                    for (int i = 0; i < str.length(); ++i) {
-                            fileWriter.write(code[(int) str.charAt(i)]);
-                    }
+                byte [] str =fileReader.readAllBytes();
+                for (int i = 0; i < str.length; ++i) {
+                    fileWriter.write(code[(int) str[i]]);
                 }
             } finally {
                 fileReader.close();
@@ -33,7 +21,7 @@ public class Coder {
             }
         } catch (Exception e) {
             try {
-                FileWriter fileWriter2 = new FileWriter(logName);
+                FileWriter fileWriter2 = new FileWriter(logName,true);
                 fileWriter2.write(e.getMessage());
                 fileWriter2.close();
             } catch (Exception e1) {
@@ -44,7 +32,7 @@ public class Coder {
     public static void main(String[] args) throws IOException{
         char a[]= new char[65536];
         for (int i =0;i<65536;i++){
-            a[i] = (char)(i+1);
+            a[i] = (char)(i);
         }
         codeFile("s","s1",a,"s2");
     }
