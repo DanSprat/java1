@@ -2,6 +2,7 @@ package ru.progwards.java1.lessons.test;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -21,6 +22,29 @@ public class Test1 {
         }
 
     }
+    public static String invertWords(String sentence){
+        String [] strs = sentence.split(" ");
+        StringBuffer stringBuffer = new StringBuffer();
+        for (String s:strs){
+            stringBuffer.insert(0,s+" ");
+        }
+        return stringBuffer.toString().trim().replace(" ",".");
+    }
+    public static String setStars(String filename) throws IOException{
+        String str="";
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(filename,"rw");){
+            for (long i = 9;i<randomAccessFile.length();i+=10){
+                randomAccessFile.seek(i);
+                str+=(char)randomAccessFile.read();
+                randomAccessFile.seek(i);
+                randomAccessFile.write('*');
+            }
+        } catch (IOException ex)
+        {
+            throw new IOException(ex.getClass().toString().replace("class ",""));
+        }
+        return str;
+    }
     private int lineCount(String filename) throws IOException{
         int i = 0;
         try {
@@ -35,7 +59,9 @@ public class Test1 {
         }
         return i;
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
+        System.out.println(setStars("s"));
+        System.out.println(invertWords("Буря мглою небо кроет"));
         System.out.println("Сделаю коммит, запушу в репо: робот, проверяй теперь всё это...");
         int[] a1 = {12, 5, 0, 58, 36};
         int[] a2 = Arrays.copyOf(a1, a1.length);
