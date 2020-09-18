@@ -61,59 +61,8 @@ public class Test1 {
         return i;
     }
     public static void main(String[] args) throws IOException{
-        int n = 0;
-        for (int i =0;i<100000000;i++){
-            int shoot=0;
-           for (int j=1;j<=5;j++){
-               double x = Math.random();
-               if (x>=0.4){
-                   shoot++;
-                   double y = Math.random();
-                   if(shoot==1){
-                       if(y>=0.5){
-                          if(j==5)
-                              n++;
-                          break;
-                       }
-                   } else if (shoot==2) {
-                       if(y>=0.3){
-                           if (j==5)
-                               n++;
-                           break;
-                       }
-                   } else {
-                       if (j==5)
-                           n++;
-                       break;
-                   }
-               }
 
-           }
-        }
-        System.out.println((double)n/100000000);
-        int n1 =0;
-        for (int i =0;i<100000000;i++){
-            int count =0;
-            for (int j=1;j<=4;j++){
-                double x = Math.random();
-                if (x>=0.6){
-                    count++;
-                    double y = Math.random();
-                    if (count==1){
-                        if (y>=0.5){
-                            if (j==4){
-                                n++;
-                            }
-                                break;
-                        }
-                    } else if (count == 2){
-                        if (y>=0.7){
-                            
-                        }
-                    }
-                }
-            }
-        }
+
 
 
 
