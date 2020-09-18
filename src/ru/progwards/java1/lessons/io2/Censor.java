@@ -5,9 +5,19 @@ import java.io.RandomAccessFile;
 
 public class Censor {
      static class CensorException extends RuntimeException {
-        String message;
-        public CensorException(String s){
-            super(s);
+        private String message;
+        private String nameofFile;
+        public CensorException(String msg,String File){
+            super();
+            message=msg;
+            nameofFile = File;
+        }
+         public CensorException(){
+             super();
+         }
+        @Override
+        public String toString(){
+            return message+":"+nameofFile;
         }
     }
     private static String setStars(String s){
@@ -18,6 +28,7 @@ public class Censor {
          return str;
     }
     public static void censorFile(String inoutFileName, String[] obscene){
+         int currentLine=0;
         try(RandomAccessFile randomAccessFile = new RandomAccessFile(inoutFileName,"rw")){
          while (randomAccessFile.getFilePointer() < randomAccessFile.length()){
              long start = randomAccessFile.getFilePointer();
@@ -37,13 +48,14 @@ public class Censor {
              }
              if (randomAccessFile.getFilePointer()+1<randomAccessFile.length())
              s+='\n';
+             currentLine++;
              byte [] b = s.getBytes("UTF-8");
              randomAccessFile.seek(start);
              randomAccessFile.write(b);
          }
-        } catch (IOException ex){
-            CensorException censorException = new CensorException(inoutFileName);
-            censorException.message = ex.getMessage();
+        } catch (Exception ex){
+            CensorException censorException = new CensorException(ex.getMessage(),inoutFileName);
+            throw censorException;
         }
     }
 
