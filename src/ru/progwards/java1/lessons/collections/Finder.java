@@ -95,7 +95,7 @@ public class Finder {
         stringArrayList.add("Дмитрий");
         stringArrayList.add("Дмитрий");
         stringArrayList.add("Дмитрий");
-        int [] array = {25,-16,-78,22,-75,-37,60,89,-16,63,25,80,-13,-48,40,-47,-44,16,9};
+        int [] array = {64,-7,83,-21,-62,65,-10,-94,0,54,40,-70,-32};
         for (int x:array)
             list.add(x);
         System.out.println(findMinSumPair(list));
