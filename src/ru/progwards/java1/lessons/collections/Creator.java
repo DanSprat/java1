@@ -17,7 +17,7 @@ public class Creator {
         Collection<Integer> collection = new ArrayList<Integer>();
         for (int i=0;i<n;i++)
         {
-            collection.add(1-2*i);
+            collection.add(2*n-1-2*i);
         }
         return collection;
     }
@@ -37,6 +37,8 @@ public class Creator {
         Collection <Integer> collection = fillEven(10);
         System.out.println(collection);
         collection = fill3(5);
+        System.out.println(collection);
+        collection = fillOdd(15);
         System.out.println(collection);
     }
 }
