@@ -79,7 +79,7 @@ public class Finder {
             }
             prev = newString;
         }
-            return maxString + ": " + maxCount;
+            return maxString + ":" + maxCount;
     }
 
     public static void main(String[] args) {
