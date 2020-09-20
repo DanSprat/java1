@@ -23,8 +23,8 @@ public class Finder {
             if (min == null || numb+prev<min) {
                 minIndex = i;// Вычесть единицу в конце
                 min = prev + numb;
-                prev = numb;
             }
+            prev = numb;
         }
       res.add(minIndex-1);
         res.add(minIndex);
@@ -95,7 +95,7 @@ public class Finder {
         stringArrayList.add("Дмитрий");
         stringArrayList.add("Дмитрий");
         stringArrayList.add("Дмитрий");
-        int [] array = {92,91,32,-58,33,45,-94,8,-44,93,96,75,-70};
+        int [] array = {25,-16,-78,22,-75,-37,60,89,-16,63,25,80,-13,-48,40,-47,-44,16,9};
         for (int x:array)
             list.add(x);
         System.out.println(findMinSumPair(list));
