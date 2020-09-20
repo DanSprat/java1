@@ -43,6 +43,8 @@ public class Finder {
             Integer right = iterator.next();
             if (left<middle && middle>right)
                 res.add(middle);
+            left =middle;
+            middle=right;
         }
         return res;
     }
@@ -93,10 +95,9 @@ public class Finder {
         stringArrayList.add("Дмитрий");
         stringArrayList.add("Дмитрий");
         stringArrayList.add("Дмитрий");
-        list.add(2);
-        list.add(2);
-        list.add(1);
-        list.add(4);
+        int [] array = {92,91,32,-58,33,45,-94,8,-44,93,96,75,-70};
+        for (int x:array)
+            list.add(x);
         System.out.println(findMinSumPair(list));
         System.out.println(findLocalMax(list));
         System.out.println(findSequence(list));
