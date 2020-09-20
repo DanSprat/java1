@@ -6,9 +6,7 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Test1 {
     public static int ret(byte value){
@@ -60,13 +58,30 @@ public class Test1 {
         }
         return i;
     }
+    public  static void scanLines(){
+        do {
+            Scanner scanner = new Scanner (System.in);
+            String str = scanner.nextLine();
+            if (str.contains("Привет")) System.out.println("Здравствуйте!");
+            else if (str.contains("как дела")) System.out.println("Хорошо");
+            else if (str.contains("/stop")) break;
+            else System.out.println(str);
+        } while (true);
+    }
+    public List<Integer> listAction(List<Integer> list){
+        if (!list.isEmpty())
+            list.remove(Collections.min(list));
+        list.add(0,list.size()-1);
+        if (list.size()>2)
+            list.add(2,Collections.max(list));
+        return list;
+
+    }
     public static void main(String[] args) throws IOException{
-
-
-
-
-
-
+        Collection<Integer> numbers = new ArrayList<>();
+        for (int i =0;i<5;i++)
+        ((ArrayList) numbers).add(3,5);
+        scanLines();
         System.out.println(setStars("s"));
         System.out.println(invertWords("Буря мглою небо кроет"));
         System.out.println("Сделаю коммит, запушу в репо: робот, проверяй теперь всё это...");
