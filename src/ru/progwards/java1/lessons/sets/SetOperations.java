@@ -28,7 +28,6 @@ public class SetOperations {
     }
 
     public static void main(String[] args) {
-
         HashSet<Integer> set1 = new HashSet<>();
         HashSet<Integer> set2 = new HashSet<>();
         set1.addAll(List.of(1,2,3,4,5,6));
