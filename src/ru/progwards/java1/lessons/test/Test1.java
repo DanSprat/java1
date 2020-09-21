@@ -9,9 +9,26 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class Test1 {
+    class User {
+        public Integer id;
+        public String name;
+        User (Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
     public static int ret(byte value){
         byte a = 0b0000_0001;
         return a&value;
+    }
+    public TreeSet<User> createSet(){
+        TreeSet<User> setUsers = new TreeSet<User>(new Comparator<User>() {
+            @Override
+            public int compare(User user, User t1) {
+                return Integer.compare(user.id,t1.id)*(-1);
+            }
+        });
+        return setUsers;
     }
     public static Integer sqr(Integer n){
         try {
@@ -68,14 +85,25 @@ public class Test1 {
             else System.out.println(str);
         } while (true);
     }
-    public List<Integer> listAction(List<Integer> list){
-        if (!list.isEmpty())
-            list.remove(Collections.min(list));
-        list.add(0,list.size()-1);
-        if (list.size()>2)
-            list.add(2,Collections.max(list));
-        return list;
 
+    public List<Integer> listAction(List<Integer> list){
+        ListIterator<Integer> iterator = list.listIterator();
+        Integer n = iterator.next();
+        while (iterator.hasNext()){
+            Integer b = iterator.next();
+            if(b>n)
+                n = b;
+        }
+        list.add(0,list.size());
+        list.add(2,n);
+        return list;
+    }
+    public Set<Integer> a2set(int[] a){
+      HashSet <Integer> hashSet = new HashSet<Integer>();
+      for (int x :a){
+          hashSet.add(x);
+      }
+      return hashSet;
     }
     public static void main(String[] args) throws IOException{
         Collection<Integer> numbers = new ArrayList<>();
