@@ -40,6 +40,7 @@ public class Censor {
                  }
              }
              String s = randomAccessFile.readLine();
+
              s = new String(s.getBytes("ISO-8859-1"),"UTF-8");
              for (int i=0;i<obscene.length;i++) {
                  if (s.contains(obscene[i])) {

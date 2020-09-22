@@ -36,7 +36,6 @@ public class ProductAnalytics {
     }
     public Set<Product> existOnlyInOne(){
         Set<Product> existOnlyOneSet = new HashSet<>();
-        Set<Product> tmp = new HashSet<>();
        for (Product product: products){
            int count =0;
            for (Shop shop: shops){
@@ -57,14 +56,15 @@ public class ProductAnalytics {
         Product p3 = new Product("p3");
         Product p4 = new Product("p4");
         Product p5 = new Product("p5");
+        Product p6 = new Product("p6");
         List<Product> forSH1 = new ArrayList<>();
-        List<Product> forSH2 = new ArrayList<>();
+        List<Product> forSH2= new ArrayList<>();
         List<Product> forSH3 = new ArrayList<>();
         List<Product> allProd = new ArrayList<>();
         forSH1.add(p1); forSH1.add(p2);forSH1.add(p3);
         forSH2.add(p2); forSH2.add(p3);forSH2.add(p4);
         forSH3.add(p3); forSH3.add(p4);forSH3.add(p5);
-        allProd.add(p1); allProd.add(p2); allProd.add(p3); allProd.add(p4);allProd.add(p5);
+        allProd.add(p1); allProd.add(p2); allProd.add(p3); allProd.add(p4);allProd.add(p5);allProd.add(p6);
         Shop shop1 = new Shop(forSH1);
         Shop shop2 = new Shop(forSH2);
         Shop shop3 = new Shop(forSH3);
