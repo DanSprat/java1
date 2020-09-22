@@ -13,6 +13,7 @@ public class LettersInFile {
         char [] chars = s.toCharArray();
         Set<Character> hashSet = new TreeSet<>();
         for (char c:chars){
+            if(Character.isAlphabetic(c))
             hashSet.add(c);
         }
         System.out.println(hashSet);
