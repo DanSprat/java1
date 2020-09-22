@@ -1,5 +1,7 @@
 package ru.progwards.java1.lessons.sets;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Product {
@@ -23,5 +25,12 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(code);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "code='" + code + '\'' +
+                '}';
     }
 }
