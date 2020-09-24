@@ -1,7 +1,4 @@
 package ru.progwards.java1.lessons.queues;
-
-import ru.progwards.java1.lessons.interfaces.CompareWeight;
-
 import java.util.*;
 
 public class CollectionsSort {
