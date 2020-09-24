@@ -9,7 +9,7 @@ public class ProductAnalytics {
     private List<Shop> shops;
     private List<Product> products;
 
-    public ProductAnalytics(List<Shop> shops, List<Product> products) {
+    public ProductAnalytics(List<Product> products,List<Shop> shops) {
         this.shops = shops;
         this.products = products;
     }
@@ -72,7 +72,7 @@ public class ProductAnalytics {
         shops.add(shop1);
         shops.add(shop2);
         shops.add(shop3);
-        ProductAnalytics productAnalytics = new ProductAnalytics(shops,allProd);
+        ProductAnalytics productAnalytics = new ProductAnalytics(allProd,shops);
         System.out.println(productAnalytics.existInAll());
         System.out.println(productAnalytics.existAtListInOne());
         System.out.println(productAnalytics.existOnlyInOne());

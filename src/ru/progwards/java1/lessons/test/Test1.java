@@ -85,7 +85,17 @@ public class Test1 {
             else System.out.println(str);
         } while (true);
     }
+    static void dequeueTest() {
+        ArrayDeque deque = new ArrayDeque<>();
 
+        for (int i = 0; i <= 10; i++) {
+            deque.offer(i);
+            if (i%2 == 0)
+                deque.poll();
+        }
+
+        System.out.println(deque);
+    }
     public List<Integer> listAction(List<Integer> list){
         ListIterator<Integer> iterator = list.listIterator();
         Integer n = iterator.next();
@@ -106,9 +116,9 @@ public class Test1 {
       return hashSet;
     }
     public static void main(String[] args) throws IOException{
+        dequeueTest();
         Collection<Integer> numbers = new ArrayList<>();
         for (int i =0;i<5;i++)
-        ((ArrayList) numbers).add(3,5);
         scanLines();
         System.out.println(setStars("s"));
         System.out.println(invertWords("Буря мглою небо кроет"));
