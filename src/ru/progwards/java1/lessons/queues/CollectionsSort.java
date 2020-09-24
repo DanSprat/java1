@@ -71,12 +71,9 @@ public class CollectionsSort {
         TimeCollSort = System.currentTimeMillis() - TimeCollSort;
 
         ArrayList<Method> methods = new ArrayList<>();
-       /* methods.add(new Method("mySort",TimeMySort));
+        methods.add(new Method("mySort",TimeMySort));
         methods.add(new Method("minSort",TimeMinSort));
-        methods.add(new Method("collSort",TimeCollSort));*/
-        methods.add(new Method("mySort",3047));
-        methods.add(new Method("minSort",2444));
-        methods.add(new Method("collSort",466));
+        methods.add(new Method("collSort",TimeCollSort));
         Collections.sort(methods);
         Collection <String> res = new ArrayList<>( List.of(methods.get(0).name,methods.get(1).name,methods.get(2).name));
         return res;
