@@ -18,7 +18,6 @@ public class CollectionsSort {
             else  return name.compareTo(method.name);
         }
     }
-
     public static void mySort(Collection<Integer> data){
        ArrayList<Integer> arrayList = new ArrayList<>(data);
         for(int i=0;i<arrayList.size()-1;++i) {
@@ -32,14 +31,16 @@ public class CollectionsSort {
         }
        data.clear();
         data.addAll(arrayList);
-
     }
     public static void minSort(Collection<Integer> data){
-        ArrayList<Integer> newList = new ArrayList<>();
-        while (!data.isEmpty()) {
-        newList.add(Collections.min(data));
-        data.remove(Collections.min(data));
+       ArrayList<Integer> newList = new ArrayList<>(data.size());
+       ArrayList<Integer> datalist = new ArrayList<>(data);
+        while (!datalist.isEmpty()) {
+          int index = datalist.indexOf(Collections.min(datalist));
+          newList.add(datalist.get(index));
+          datalist.remove((int)index);
         }
+        data.clear();
        data.addAll(newList);
     }
     static void collSort(Collection<Integer> data){
@@ -49,11 +50,9 @@ public class CollectionsSort {
         data.addAll(list);
     }
     public static Collection<String> compareSort(){
-
-
         ArrayList<Integer> arrayList = new ArrayList<>();
-        for (int i =1;i<50000;i++){
-            arrayList.add((int)Math.random()*500000);
+        for (int i =1;i<1005;i++){
+            arrayList.add((int) (Math.random()*5000));
         }
         ArrayList <Integer> MySort = new ArrayList<>(arrayList);
         long TimeMySort = System.currentTimeMillis();
