@@ -115,7 +115,19 @@ public class Test1 {
       }
       return hashSet;
     }
+    static void pqTest() {
+        PriorityQueue pQueue = new PriorityQueue<>();
+        pQueue.offer(10);
+        pQueue.offer(1);
+        pQueue.offer(9);
+        pQueue.offer(3);
+        System.out.println(pQueue);
+        System.out.println(pQueue.poll());
+    }
+
+
     public static void main(String[] args) throws IOException{
+        pqTest();
         dequeueTest();
         Collection<Integer> numbers = new ArrayList<>();
         for (int i =0;i<5;i++)

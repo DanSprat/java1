@@ -1,36 +1,33 @@
 package ru.progwards.java1.lessons.queues;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class OrderQueue {
-    ArrayList<Deque<Order>> classesList = new ArrayList<>(3);
-
+    PriorityQueue<Order> priorityQueue;
     public OrderQueue() {
-            classesList.add(new ArrayDeque<>());
-            classesList.add(new ArrayDeque<>());
-            classesList.add(new ArrayDeque<>());
+        priorityQueue = new PriorityQueue<>(new Comparator<Order>() {
+            @Override
+            public int compare(Order order, Order t1) {
+                return Integer.compare(order.getQueueClass(),t1.getQueueClass());
+            }
+        });
     }
-
     public void add(Order order){
-        if (order.sum >20000){
-            classesList.get(0).offer(order);
-        } else if (order.sum <=10000){
-            classesList.get(2).offer(order);
+        if (order.getSum() >20000){
+            order.setQueueClass(1);
+            priorityQueue.offer(order);
+        } else if (order.getSum() <=10000){
+            order.setQueueClass(3);
+            priorityQueue.offer(order);
         } else {
-            classesList.get(1).offer(order);
+            order.setQueueClass(2);
+            priorityQueue.offer(order);
         }
     }
     public Order get(){
-        if (!classesList.get(0).isEmpty())
-            return classesList.get(0).poll();
-        else if (!classesList.get(1).isEmpty())
-            return classesList.get(1).poll();
-        else if (!classesList.get(2).isEmpty())
-            return classesList.get(2).poll();
-        else return null;
+       if (!priorityQueue.isEmpty())
+           return priorityQueue.poll();
+       else return null;
     }
 
     public static void main(String[] args) {
@@ -43,6 +40,9 @@ public class OrderQueue {
         orderQueue.add(new Order(70000));//1
         orderQueue.add(new Order(20000));//2
         orderQueue.add(new Order(10000));//3
+        Order order = orderQueue.get();
+        System.out.println(order.getSum());
+        System.out.println(order.getQueueClass());
         System.out.println("End");
     }
 }
