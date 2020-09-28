@@ -8,6 +8,8 @@ import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static ru.progwards.java1.lessons.test.Test1.checkAndAdd;
+
 public class Test1 {
     class User {
         public Integer id;
@@ -124,9 +126,31 @@ public class Test1 {
         System.out.println(pQueue);
         System.out.println(pQueue.poll());
     }
+    HashMap<Integer, String> a2map(int[] akey, String[] aval){
+        HashMap <Integer, String> HM = new HashMap<>();
+        for (int i = 0;i<akey.length;i++){
+            HM.put(akey[i],aval[i]);
+        }
+        return HM;
+    }
+    static void checkAndAdd(TreeMap<Integer, String> map, Integer key, String value){
+        String s = map.get(key);
+        if (s==null){
+            if (!map.isEmpty()) {
+                Integer i1 = map.firstKey();
+                Integer i2 = map.lastKey();
+                if (key > i1 && key < i2) {
+                    map.put(key, value);
+                }
+            }
+        }
 
-
+    }
     public static void main(String[] args) throws IOException{
+        TreeMap<Integer, String> map = new TreeMap<>();
+        checkAndAdd(map, 0, "Zero");
+        checkAndAdd(map, 0, "Zero");
+        System.out.println(map);
         pqTest();
         dequeueTest();
         Collection<Integer> numbers = new ArrayList<>();
