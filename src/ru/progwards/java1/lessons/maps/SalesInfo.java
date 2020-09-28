@@ -36,7 +36,7 @@ public class SalesInfo {
                    try {
                        int count = Integer.parseInt(strs[2].trim());
                        double price = Double.parseDouble(strs[3].trim());
-                       saleList.add(new Sale(strs[0], strs[1], count, price));
+                       saleList.add(new Sale(strs[0].trim(), strs[1].trim(), count, price));
                        countOfLines++;
                    } catch (Exception e) {
                        System.out.println(e.getMessage());
@@ -62,9 +62,9 @@ public class SalesInfo {
     public Map<String, AbstractMap.SimpleEntry<Double, Integer>> getCustomers(){
         TreeMap<String,AbstractMap.SimpleEntry<Double, Integer>> entryTreeMap = new TreeMap<>();
         for (Sale sale:saleList){
-            AbstractMap.SimpleEntry<Double, Integer> as = entryTreeMap.putIfAbsent(sale.name,new AbstractMap.SimpleEntry<>(sale.price*sale.count,sale.count));
+            AbstractMap.SimpleEntry<Double, Integer> as = entryTreeMap.putIfAbsent(sale.name,new AbstractMap.SimpleEntry<>(sale.price,sale.count));
             if (as!=null){
-                entryTreeMap.replace(sale.name,new AbstractMap.SimpleEntry<>(entryTreeMap.get(sale.name).getKey()+sale.price*sale.count,entryTreeMap.get(sale.name).getValue()+sale.count));
+                entryTreeMap.replace(sale.name,new AbstractMap.SimpleEntry<>(entryTreeMap.get(sale.name).getKey()+sale.price,entryTreeMap.get(sale.name).getValue()+sale.count));
             }
         }
         return entryTreeMap;
