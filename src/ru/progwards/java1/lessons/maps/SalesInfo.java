@@ -52,9 +52,9 @@ public class SalesInfo {
     public Map<String, Double> getGoods(){
         TreeMap<String,Double> goodsMap = new TreeMap<>();
         for (Sale sale:saleList){
-            Double d = goodsMap.putIfAbsent(sale.item,sale.count*sale.price);
+            Double d = goodsMap.putIfAbsent(sale.item,sale.price);
             if (d!=null){
-                goodsMap.replace(sale.item,goodsMap.get(sale.item)+sale.count*sale.price);
+                goodsMap.replace(sale.item,goodsMap.get(sale.item)+sale.price);
             }
         }
         return goodsMap;
