@@ -6,10 +6,13 @@ import java.util.Map;
 
 public class UsageFrequency {
     private String data;
-    public void processFile(String fileName) throws Exception {
-        FileInputStream fileInputStream = new FileInputStream(fileName);
-        byte[] str = fileInputStream.readAllBytes();
-        data = new String(str);
+    public void processFile(String fileName) {
+        try(FileInputStream fileInputStream = new FileInputStream(fileName)) {
+            byte[] str = fileInputStream.readAllBytes();
+            data = new String(str);
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     public Map<Character, Integer> getLetters(){
@@ -46,7 +49,7 @@ public class UsageFrequency {
         return wordsMap;
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) {
         UsageFrequency usageFrequency = new UsageFrequency();
         usageFrequency.processFile("wiki.test.tokens");
         System.out.println(usageFrequency.getWords());

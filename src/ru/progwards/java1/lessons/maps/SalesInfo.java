@@ -1,7 +1,6 @@
 package ru.progwards.java1.lessons.maps;
 
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class SalesInfo {
@@ -24,26 +23,31 @@ public class SalesInfo {
         this.saleList = new ArrayList<>();
     }
 
-    public int loadOrders(String fileName)throws Exception{
-        FileReader fileReader = new FileReader(fileName);
-        Scanner scanner = new Scanner(fileReader);
-        int countOfLines =0;
-        while (scanner.hasNextLine()){
-            String s = scanner.nextLine();
-           s= s.replaceAll("\\s+"," ");
-            String [] strs = s.split(",");
-            if (strs.length==4){
-              try {
-                  int count = Integer.parseInt(strs[2].trim());
-                  double price = Double.parseDouble(strs[3].trim());
-                  saleList.add(new Sale(strs[0],strs[1],count,price));
-                  countOfLines++;
-              } catch(Exception e) {
-                  throw new Exception("IncorrectLine");
-                }
-            }
-        }
-        return countOfLines;
+    public int loadOrders(String fileName){
+        int countOfLines = 0;
+       try(FileReader fileReader = new FileReader(fileName)) {
+           Scanner scanner = new Scanner(fileReader);
+
+           while (scanner.hasNextLine()) {
+               String s = scanner.nextLine();
+               s = s.replaceAll("\\s+", " ");
+               String[] strs = s.split(",");
+               if (strs.length == 4) {
+                   try {
+                       int count = Integer.parseInt(strs[2].trim());
+                       double price = Double.parseDouble(strs[3].trim());
+                       saleList.add(new Sale(strs[0], strs[1], count, price));
+                       countOfLines++;
+                   } catch (Exception e) {
+                       throw new Exception("IncorrectLine");
+                   }
+               }
+           }
+           return countOfLines;
+       } catch (Exception ex) {
+           System.out.println(ex.getMessage());
+       }
+       return countOfLines;
     }
     public Map<String, Double> getGoods(){
         TreeMap<String,Double> goodsMap = new TreeMap<>();
@@ -66,7 +70,7 @@ public class SalesInfo {
         return entryTreeMap;
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args){
        SalesInfo salesInfo = new SalesInfo();
        salesInfo.loadOrders("s");
        System.out.println(salesInfo.getCustomers());
