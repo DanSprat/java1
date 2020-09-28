@@ -39,7 +39,7 @@ public class SalesInfo {
                        saleList.add(new Sale(strs[0], strs[1], count, price));
                        countOfLines++;
                    } catch (Exception e) {
-                       throw new Exception("IncorrectLine");
+                       System.out.println(e.getMessage());
                    }
                }
            }
@@ -72,7 +72,7 @@ public class SalesInfo {
 
     public static void main(String[] args){
        SalesInfo salesInfo = new SalesInfo();
-       salesInfo.loadOrders("s");
+      int i = salesInfo.loadOrders("s");
        System.out.println(salesInfo.getCustomers());
     }
 }
