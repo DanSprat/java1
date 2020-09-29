@@ -15,7 +15,7 @@ public class FiboMapCache {
             fiboCache.put(2,new BigDecimal("1"));
         }
     }
-   /* public BigDecimal fiboNumber(int n){
+    public BigDecimal fiboNumber(int n){
         if (fiboCache!=null){
             if (n<=2){
                 return fiboCache.get(n);
@@ -30,6 +30,7 @@ public class FiboMapCache {
                     first = second;
                     second=j;
                 }
+                fiboCache.put(n,second);
                 return second;
             }
         } else {
@@ -47,13 +48,17 @@ public class FiboMapCache {
             }
         }
     }
-*/
-    public BigDecimal fiboNumber(int n){
+
+   /* public BigDecimal fiboNumber(int n){
         if (fiboCache!=null){
             if (n<=2){
                 return fiboCache.get(n);
             } else {
-                return fiboNumber(n-1);
+                BigDecimal first = fiboNumber(n-1);
+                BigDecimal second = fiboNumber(n-2);
+                BigDecimal ret = first.add(second);
+                fiboCache.put(n,ret);
+                return ret;
             }
         } else {
             BigDecimal first = new BigDecimal("1");
@@ -69,7 +74,7 @@ public class FiboMapCache {
                 return second;
             }
         }
-    }
+    }*/
     public void clearCahe(){
         fiboCache= null;
     }
