@@ -15,7 +15,7 @@ public class FiboMapCache {
             fiboCache.put(2,new BigDecimal("1"));
         }
     }
-    public BigDecimal fiboNumber(int n){
+   /* public BigDecimal fiboNumber(int n){
         if (fiboCache!=null){
             if (n<=2){
                 return fiboCache.get(n);
@@ -23,7 +23,7 @@ public class FiboMapCache {
                 BigDecimal first = fiboCache.get(1);
                 BigDecimal second = fiboCache.get(2);
                 for (int i =3;i<=n;i++){
-                    BigDecimal j = fiboCache.get(i);
+                    BigDecimal j= fiboCache.get(i);
                     if (j==null){
                         j = first.add(second);
                     }
@@ -36,10 +36,33 @@ public class FiboMapCache {
             BigDecimal first = new BigDecimal("1");
             BigDecimal second = new BigDecimal("1");
             if (n<=2){
-              return second;
+                return second;
             } else {
                 for (int i =3;i<=n;i++){
-                   BigDecimal j = first.add(second);
+                    BigDecimal j = first.add(second);
+                    first = second;
+                    second=j;
+                }
+                return second;
+            }
+        }
+    }
+*/
+    public BigDecimal fiboNumber(int n){
+        if (fiboCache!=null){
+            if (n<=2){
+                return fiboCache.get(n);
+            } else {
+                return fiboNumber(n-1);
+            }
+        } else {
+            BigDecimal first = new BigDecimal("1");
+            BigDecimal second = new BigDecimal("1");
+            if (n<=2){
+                return second;
+            } else {
+                for (int i =3;i<=n;i++){
+                    BigDecimal j = first.add(second);
                     first = second;
                     second=j;
                 }
@@ -53,13 +76,13 @@ public class FiboMapCache {
     public static void test(){
         FiboMapCache fiboMapCache = new FiboMapCache(true);
         long FirstTime = System.currentTimeMillis();
-        for(int i=1;i<=10000;i++){
+        for(int i=1;i<=1000;i++){
             System.out.println(fiboMapCache.fiboNumber(i));
         }
         FirstTime = System.currentTimeMillis()-FirstTime;
-        long SecondTime = System.currentTimeMillis();
         fiboMapCache.clearCahe();
-        for(int i=1;i<=10000;i++){
+        long SecondTime = System.currentTimeMillis();
+        for(int i=1;i<=1000;i++){
             System.out.println(fiboMapCache.fiboNumber(i));
         }
         SecondTime = System.currentTimeMillis()-SecondTime;
