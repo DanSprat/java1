@@ -14,7 +14,7 @@ public class Insurance {
         this.start = start;
     }
     public Insurance(String strStart, FormatStyle style){
-        DateTimeFormatter dtf;
+        DateTimeFormatter dtf=null;
         switch (style){
             case SHORT:
                 dtf = DateTimeFormatter.ISO_LOCAL_DATE;
@@ -26,7 +26,7 @@ public class Insurance {
                 dtf = DateTimeFormatter. ISO_LOCAL_DATE_TIME;
                 break;
         }
-
+        start = ZonedDateTime.from(dtf.parse(strStart));
     }
     public void setDuration(Duration duration){
         this.duration=duration;
@@ -60,6 +60,8 @@ public class Insurance {
         else return true;
     }
     public String toString(){
+        if (duration==null)
+            return return  "Insurance issued on " + start + " is valid";
         if(ZonedDateTime.now().isAfter(start.plus(duration)))
             return "Insurance issued on " + start + " is not valid";
         else {
