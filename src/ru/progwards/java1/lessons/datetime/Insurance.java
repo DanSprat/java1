@@ -16,15 +16,18 @@ public class Insurance {
     public Insurance(String strStart, FormatStyle style){
         DateTimeFormatter dtf=null;
         switch (style){
-            case SHORT:
+            case SHORT:{
                 dtf = DateTimeFormatter.ISO_LOCAL_DATE;
                 break;
-            case FULL:
+            }
+            case FULL: {
                 dtf = DateTimeFormatter.ISO_ZONED_DATE_TIME;
                 break;
-            case LONG:
-                dtf = DateTimeFormatter. ISO_LOCAL_DATE_TIME;
+            }
+            case LONG: {
+                dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
                 break;
+            }
         }
         start = ZonedDateTime.from(dtf.parse(strStart));
     }
