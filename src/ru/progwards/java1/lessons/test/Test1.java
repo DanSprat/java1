@@ -6,6 +6,8 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static ru.progwards.java1.lessons.test.Test1.checkAndAdd;
@@ -146,8 +148,31 @@ public class Test1 {
         }
 
     }
+    static Instant createInstant(){
+        ZonedDateTime zdt = ZonedDateTime.of(2020,1,1,15,0,0,1,ZoneId.of("Europe/Moscow"));
+        return zdt.toInstant();
+    }
+    static ZonedDateTime parseZDT(String str){
+        DateTimeFormatter dft = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss.SSS Z zzzz", Locale.ENGLISH);
+        ZonedDateTime zdt = ZonedDateTime.from(dft.parse(str));
+        return zdt;
+    }
     public static void main(String[] args) throws IOException{
+        ZonedDateTime zdt = Instant.now().atZone(ZoneId.of("Europe/Moscow"));
+        zdt.plusMonths(1);
+        System.out.println(Duration.between(zdt,zdt.plusMonths(2)).toString());
+        System.out.println(parseZDT("01.01.2020 16:27:14.444 +0300 Moscow Standard Time"));
+        System.out.println(createInstant());
+        System.out.println();
+        LocalDateTime ldt1= LocalDateTime.now();
+        LocalDateTime ldt2= ldt1.plusDays(4);
+        Duration duration = Duration.between(ldt1,ldt2);
+        System.out.println(duration.toHours());
         TreeMap<Integer, String> map = new TreeMap<>();
+        LocalDateTime ldt3= LocalDateTime.of(2019, 05, 05, 22, 24);
+        System.out.println(ldt3);
+        ZoneId zid1 = ZoneId.of("Europe/Moscow");
+        System.out.println(zid1.getRules().getOffset(Instant.now()));
         checkAndAdd(map, 0, "Zero");
         checkAndAdd(map, 0, "Zero");
         System.out.println(map);
