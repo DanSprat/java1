@@ -45,7 +45,7 @@ public class Insurance {
         switch (style){
             case LONG: {
                 DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-                duration = Duration.between(start,ZonedDateTime.from(dtf.parse(strDuration)));
+                duration = Duration.between(start,LocalDateTime.from(dtf.parse(strDuration)).atZone(ZoneId.systemDefault());
             }
             case FULL:{
                 duration = Duration.parse(strDuration);
