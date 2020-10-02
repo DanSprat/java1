@@ -46,12 +46,15 @@ public class Insurance {
             case LONG: {
                 DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
                 duration = Duration.between(start,LocalDateTime.from(dtf.parse(strDuration)).atZone(ZoneId.systemDefault()));
+                break;
             }
             case FULL:{
                 duration = Duration.parse(strDuration);
+                break;
             }
             case SHORT:{
                 duration = Duration.ofMillis(Long.parseLong(strDuration));
+                break;
             }
         }
     }
@@ -78,5 +81,11 @@ public class Insurance {
         ZonedDateTime zdt = Instant.now().atZone(ZoneId.systemDefault());
         String s ="2011-12-03";
         Insurance insurance = new Insurance(s,FormatStyle.SHORT);
+        Duration duration = Duration.parse("PT27H46M40S");
+        String s1= "PT27H46M40S";
+        insurance.setDuration(s1,FormatStyle.FULL);
+        System.out.println(insurance.duration);
+
+
     }
 }
