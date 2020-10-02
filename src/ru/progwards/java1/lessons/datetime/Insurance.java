@@ -61,7 +61,9 @@ public class Insurance {
         else return true;
     }
     public String toString(){
-        if (duration==null)
+        if (ZonedDateTime.now().isBefore(start))
+            return "Insurance issued on " + start + " is not valid";
+        else if (duration==null)
             return "Insurance issued on " + start + " is valid";
         if(ZonedDateTime.now().isAfter(start.plus(duration)))
             return "Insurance issued on " + start + " is not valid";
