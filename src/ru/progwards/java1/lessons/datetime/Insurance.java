@@ -3,6 +3,7 @@ package ru.progwards.java1.lessons.datetime;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalUnit;
+import java.util.spi.TimeZoneNameProvider;
 
 public class Insurance {
     public static enum FormatStyle {SHORT, LONG, FULL}
@@ -46,7 +47,8 @@ public class Insurance {
         switch (style){
             case LONG: {
                 DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-                duration = Duration.between(start,start.minusSeconds(LocalDateTime.from(dtf.parse(strDuration)).atZone(ZoneId.systemDefault()).getSecond()));
+                LocalDateTime ldt = LocalDateTime.from(dtf.parse(strDuration));
+                duration = Duration.between(LocalDateTime.of(0,1,1,0,0),ldt.plusMonths(1));
                 break;
             }
             case FULL:{
@@ -79,13 +81,10 @@ public class Insurance {
     }
 
     public static void main(String[] args) {
-        ZonedDateTime zdt = Instant.now().atZone(ZoneId.systemDefault());
-        String s ="2011-12-03";
-        Insurance insurance = new Insurance(s,FormatStyle.SHORT);
-        Duration duration = Duration.parse("PT27H46M40S");
-        String s1= "PT27H46M40S";
-        insurance.setDuration(s1,FormatStyle.FULL);
-        System.out.println(insurance.duration);
+      ZonedDateTime zdt = ZonedDateTime.parse("2020-09-02T16:42:12.587618+03:00[Europe/Moscow]");
+      Insurance insurance = new Insurance(zdt);
+      insurance.setDuration("0000-01-04T00:00:00", Insurance.FormatStyle.LONG);
+        System.out.println(insurance.toString());
 
 
     }
