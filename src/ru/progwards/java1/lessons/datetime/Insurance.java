@@ -11,22 +11,23 @@ public class Insurance {
         this.start = start;
     }
     public Insurance(String strStart, FormatStyle style){
-        DateTimeFormatter dtf=null;
         switch (style){
             case SHORT:{
-                dtf = DateTimeFormatter.ISO_LOCAL_DATE;
+                DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE;
+                start = LocalDate.from(dtf.parse(strStart)).atStartOfDay(ZoneId.systemDefault());
                 break;
             }
             case FULL: {
-                dtf = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+                DateTimeFormatter dtf = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+                start = ZonedDateTime.from(dtf.parse(strStart));
                 break;
             }
             case LONG: {
-                dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                start = LocalDateTime.from(dtf.parse(strStart)).atZone(ZoneId.systemDefault());
                 break;
             }
         }
-        start = LocalDateTime.from(dtf.parse(strStart)).atZone(ZoneId.systemDefault());
     }
     public void setDuration(Duration duration){
         this.duration=duration;
@@ -70,6 +71,8 @@ public class Insurance {
     }
 
     public static void main(String[] args) {
-
+        ZonedDateTime zdt = Instant.now().atZone(ZoneId.systemDefault());
+        String s ="2011-12-03";
+        Insurance insurance = new Insurance(s,FormatStyle.SHORT);
     }
 }
