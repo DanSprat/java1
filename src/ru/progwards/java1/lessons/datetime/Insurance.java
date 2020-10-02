@@ -2,6 +2,7 @@ package ru.progwards.java1.lessons.datetime;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalUnit;
 
 public class Insurance {
     public static enum FormatStyle {SHORT, LONG, FULL}
@@ -45,7 +46,7 @@ public class Insurance {
         switch (style){
             case LONG: {
                 DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-                duration = Duration.between(start,LocalDateTime.from(dtf.parse(strDuration)).atZone(ZoneId.systemDefault()));
+                duration = Duration.between(start,start.minusSeconds(LocalDateTime.from(dtf.parse(strDuration)).atZone(ZoneId.systemDefault()).getSecond()));
                 break;
             }
             case FULL:{
