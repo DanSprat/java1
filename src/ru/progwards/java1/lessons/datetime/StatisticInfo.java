@@ -10,5 +10,6 @@ class StatisticInfo {
         this.sectionName = sectionName;
         this.fullTime = fullTime;
         this.selfTime = selfTime;
+        this.count=1;
     }
 }
