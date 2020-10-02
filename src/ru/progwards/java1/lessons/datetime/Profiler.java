@@ -1,10 +1,7 @@
 package ru.progwards.java1.lessons.datetime;
 
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Profiler {
     private static ArrayList<StatisticInfo> infos = new ArrayList<>();
@@ -63,6 +60,12 @@ public class Profiler {
             }
             Stack.pollLast();
             onStack.remove(name);
+            infos.sort(new Comparator<StatisticInfo>() {
+                @Override
+                public int compare(StatisticInfo statisticInfo, StatisticInfo t1) {
+                    return statisticInfo.sectionName.compareTo(t1.sectionName);
+                }
+            });
         }
 
     }
