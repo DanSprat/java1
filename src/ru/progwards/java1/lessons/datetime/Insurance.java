@@ -38,9 +38,7 @@ public class Insurance {
         duration = Duration.between(start,expiration);
     }
     public void setDuration(int months, int days, int hours){
-        ZonedDateTime zdt = start.plusMonths(months);
-        zdt.plusDays(days);
-        zdt.plusHours(hours);
+        ZonedDateTime zdt = start.plusMonths(months).plusDays(days).plusHours(hours);
         duration = Duration.between(start,zdt);
     }
     public void setDuration(String strDuration, FormatStyle style){
@@ -83,7 +81,7 @@ public class Insurance {
     public static void main(String[] args) {
       ZonedDateTime zdt = ZonedDateTime.parse("2020-09-02T16:42:12.587618+03:00[Europe/Moscow]");
       Insurance insurance = new Insurance(zdt);
-      insurance.setDuration("0000-01-04T00:00:00", Insurance.FormatStyle.LONG);
+      insurance.setDuration(0, 2, 0);
         System.out.println(insurance.toString());
 
 
