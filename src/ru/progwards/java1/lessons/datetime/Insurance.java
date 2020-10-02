@@ -1,9 +1,6 @@
 package ru.progwards.java1.lessons.datetime;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.Period;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class Insurance {
@@ -29,7 +26,7 @@ public class Insurance {
                 break;
             }
         }
-        start = ZonedDateTime.from(dtf.parse(strStart));
+        start = LocalDateTime.from(dtf.parse(strStart)).atZone(ZoneId.systemDefault());
     }
     public void setDuration(Duration duration){
         this.duration=duration;
@@ -72,4 +69,7 @@ public class Insurance {
         }
     }
 
+    public static void main(String[] args) {
+
+    }
 }
