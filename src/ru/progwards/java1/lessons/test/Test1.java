@@ -1,11 +1,9 @@
 package ru.progwards.java1.lessons.test;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.nio.file.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -149,6 +147,7 @@ public class Test1 {
 
     }
     static Instant createInstant(){
+        Date.from(Instant.ofEpochMilli(0).plusMillis(16*365*24*60*60*1000L+62*24*60*60*1000L+21*60*60*1000L));
         ZonedDateTime zdt = ZonedDateTime.of(2020,1,1,15,0,0,1,ZoneId.of("Europe/Moscow"));
         return zdt.toInstant();
     }
@@ -157,7 +156,27 @@ public class Test1 {
         ZonedDateTime zdt = ZonedDateTime.from(dft.parse(str));
         return zdt;
     }
+    static String createFolder(String name){
+        File filename = new File(name);
+        boolean b =filename.mkdir();
+        return Paths.get("").toAbsolutePath().getParent().toString();
+    }
+   static boolean replaceF(String name){
+        Path path = Paths.get(name);
+        try {
+            String s = Files.readString(path);
+            s = s.replaceAll("F","f");
+            Files.writeString(path,s,StandardOpenOption.TRUNCATE_EXISTING);
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
     public static void main(String[] args) throws IOException{
+        replaceF("s");
+        System.out.println(createFolder("name1"));
+        ZoneId zid1 = ZoneId.of("Europe/Moscow");
+        System.out.println(zid1.getRules().getOffset(Instant.now()));
         ZonedDateTime zdt = Instant.now().atZone(ZoneId.of("Europe/Moscow"));
         zdt.plusMonths(1);
         System.out.println(Duration.between(zdt,zdt.plusMonths(2)).toString());
@@ -171,8 +190,6 @@ public class Test1 {
         TreeMap<Integer, String> map = new TreeMap<>();
         LocalDateTime ldt3= LocalDateTime.of(2019, 05, 05, 22, 24);
         System.out.println(ldt3);
-        ZoneId zid1 = ZoneId.of("Europe/Moscow");
-        System.out.println(zid1.getRules().getOffset(Instant.now()));
         checkAndAdd(map, 0, "Zero");
         checkAndAdd(map, 0, "Zero");
         System.out.println(map);
