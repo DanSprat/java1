@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -87,6 +84,8 @@ public class OrderProcessor {
     }
 
     public static void main(String[] args)throws Exception {
+        System.out.println(ZonedDateTime.now().toLocalDateTime());
+        System.out.println(Files.getLastModifiedTime(Paths.get("test/111-222223-3333.csv")));
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
         orderProcessor.loadOrders(null,null,null);
         System.out.println(orderProcessor.process("111"));
