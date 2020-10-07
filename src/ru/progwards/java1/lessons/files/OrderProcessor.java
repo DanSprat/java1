@@ -50,10 +50,10 @@ public class OrderProcessor {
                            double sum = 0;
                            for (String s : arrayList) {
                                String[] strs = s.split(",");
-                               orderItems.add(new OrderItem(strs[0], Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
+                              // orderItems.add(new OrderItem(strs[0], Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
                                sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
                            }
-                           orders.add(new Order(strings[0], strings[1], strings[2], ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
+                          // orders.add(new Order(strings[0], strings[1], strings[2], ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
                        }
                    }
 
