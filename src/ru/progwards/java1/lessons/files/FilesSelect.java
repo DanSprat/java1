@@ -1,7 +1,5 @@
 package ru.progwards.java1.lessons.files;
 
-import ru.progwards.java1.lessons.datetime.Insurance;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
