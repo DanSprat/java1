@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class OrderProcessor {
     ArrayList<Order> orders;
@@ -82,11 +83,22 @@ public class OrderProcessor {
         });
         return processList;
     }
+    public Map<String, Double> statisticsByShop(){
+
+        return null;
+    }
+    public Map<String, Double> statisticsByGoods(){
+        return null;
+    }
+    public Map<LocalDate, Double> statisticsByDay(){
+        return null;
+    }
 
     public static void main(String[] args)throws Exception {
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
         orderProcessor.loadOrders(null,null,null);
         System.out.println(orderProcessor.process("111"));
     }
+
 
 }
