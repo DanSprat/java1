@@ -5,9 +5,6 @@ public class OrderItem {
     public int count;
     public double price;
 
-    public OrderItem(String goodsName, int count, double price) {
-        this.googsName = goodsName;
-        this.count = count;
-        this.price = price;
-    }
+   public OrderItem(){
+   }
 }
