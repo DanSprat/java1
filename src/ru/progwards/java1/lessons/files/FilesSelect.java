@@ -15,7 +15,7 @@ public class FilesSelect {
             final Path dirIn = Paths.get(inFolder);
             final Path dirOut = Paths.get(outFolder);
             PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:**/*.txt");
-            Files.walkFileTree(dirIn, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(dirIn, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
                     try {
