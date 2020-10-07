@@ -84,8 +84,6 @@ public class OrderProcessor {
     }
 
     public static void main(String[] args)throws Exception {
-        System.out.println(ZonedDateTime.now().toLocalDateTime());
-        System.out.println(Files.getLastModifiedTime(Paths.get("test/111-222223-3333.csv")));
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
         orderProcessor.loadOrders(null,null,null);
         System.out.println(orderProcessor.process("111"));

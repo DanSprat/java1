@@ -1,6 +1,7 @@
 package ru.progwards.java1.lessons.files;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
@@ -11,6 +12,9 @@ public class Order {
     public List<OrderItem> items;
     public double sum;
 
+    public Order(){
+        items = new ArrayList<>();
+    }
     public Order(String shopId, String orderId, String customerId, LocalDateTime datetime, List<OrderItem> items, double sum) {
         this.shopId = shopId;
         this.orderId = orderId;
