@@ -25,7 +25,11 @@ public class OrderProcessor {
                 mode = Mode.ALL;
             }
         } else {
+            if (finish ==null){
             mode = Mode.RIGHT_INTERVAL;
+            } else {
+                mode=Mode.INTERVAL;
+            }
         }
         final Integer[] count = {0};
         PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:**/*.csv");
@@ -41,8 +45,9 @@ public class OrderProcessor {
                                 return FileVisitResult.CONTINUE;
                             }
                             if (mode == Mode.ALL ||
-                                    mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish)) ||
-                                    mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start))) {
+                                    mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish.plusDays(1))) ||
+                                    mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ||
+                                    mode == Mode.INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish.plusDays(1))) && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ) {
                                 if (shopId == null || shopId == strings[0]) {
                                     arrayList = Files.readAllLines(path);
                                     List<OrderItem> orderItems = new ArrayList<>();
