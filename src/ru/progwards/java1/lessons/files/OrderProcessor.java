@@ -35,25 +35,29 @@ public class OrderProcessor {
                 public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
                     if (pathMatcher.matches(path)) {
                         List<String> arrayList;
-                        String[] strings = path.getFileName().toString().replace(".csv", "").split("-");
-                        if (strings.length != 3 || strings[0].length() != 3 || strings[1].length() != 6 || strings[2].length() != 4) {
+                        try {
+                            String[] strings = path.getFileName().toString().replace(".csv", "").split("-");
+                            if (strings.length != 3 || strings[0].length() != 3 || strings[1].length() != 6 || strings[2].length() != 4) {
+                                return FileVisitResult.CONTINUE;
+                            }
+                            if (mode == Mode.ALL ||
+                                    mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish)) ||
+                                    mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start))) {
+                                if (shopId == null || shopId == strings[0]) {
+                                    arrayList = Files.readAllLines(path, Charset.forName("windows-1251"));
+                                    List<OrderItem> orderItems = new ArrayList<>();
+                                    double sum = 0;
+                                    for (String s : arrayList) {
+                                        String[] strs = s.split(",");
+                                        orderItems.add(new OrderItem(strs[0], Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
+                                        sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
+                                    }
+                                    orders.add(new Order(strings[0], strings[1], strings[2], ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
+                                }
+                            }
+                        } catch (Exception ex){
                             count[0]++;
                             return FileVisitResult.CONTINUE;
-                        }
-                        if (mode == Mode.ALL ||
-                                mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish)) ||
-                                mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start))) {
-                            if (shopId == null || shopId == strings[0]) {
-                                arrayList = Files.readAllLines(path, Charset.forName("windows-1251"));
-                                List<OrderItem> orderItems = new ArrayList<>();
-                                double sum = 0;
-                                for (String s : arrayList) {
-                                    String[] strs = s.split(",");
-                                    orderItems.add(new OrderItem(strs[0], Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
-                                    sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
-                                }
-                                orders.add(new Order(strings[0], strings[1], strings[2], ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
-                            }
                         }
 
                     }
@@ -124,7 +128,7 @@ public class OrderProcessor {
 
     public static void main(String[] args){
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
-        orderProcessor.loadOrders(null,null,null);
+        System.out.println(orderProcessor.loadOrders(null,null,null));
         System.out.println(orderProcessor.process(null));
         System.out.println((orderProcessor.statisticsByShop()));
     }
