@@ -6,10 +6,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OrderProcessor {
     ArrayList<Order> orders;
@@ -89,19 +86,47 @@ public class OrderProcessor {
         return processList;
     }
     public Map<String, Double> statisticsByShop(){
-        return null;
+        TreeMap<String,Double> treeMap = new TreeMap<>();
+        for (Order x : orders){
+            if (treeMap.containsKey(x.shopId)){
+                treeMap.replace(x.shopId,treeMap.get(x.shopId)+x.sum);
+            }
+            else {
+                treeMap.put(x.shopId,x.sum);
+            }
+        }
+        return treeMap;
     }
     public Map<String, Double> statisticsByGoods(){
-        return null;
+        TreeMap<String,Double> treeMap = new TreeMap<>();
+        for (Order x: orders){
+            for (OrderItem y:x.items){
+                if (treeMap.containsKey(y.googsName)){
+                    treeMap.replace(y.googsName,treeMap.get(y.googsName)+y.price*y.count);
+                } else {
+                    treeMap.put(y.googsName,y.price*y.count);
+                }
+            }
+        }
+        return treeMap;
     }
     public Map<LocalDate, Double> statisticsByDay(){
-        return null;
+        TreeMap<LocalDate,Double> treeMap = new TreeMap<>();
+        for (Order x: orders){
+            if (treeMap.containsKey(x.datetime)){
+                treeMap.replace(x.datetime.toLocalDate(),treeMap.get(x.datetime)+x.sum);
+            } else {
+                treeMap.put(x.datetime.toLocalDate(),x.sum);
+            }
+        }
+        return treeMap;
     }
 
     public static void main(String[] args){
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
         orderProcessor.loadOrders(null,null,null);
-        System.out.println(orderProcessor.process("111"));
+        System.out.println(orderProcessor.process(null));
+        System.out.println((orderProcessor.statisticsByShop()));
     }
 
 
