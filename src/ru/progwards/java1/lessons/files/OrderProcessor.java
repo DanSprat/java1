@@ -31,7 +31,7 @@ public class OrderProcessor {
                 mode=Mode.INTERVAL;
             }
         }
-        final Integer[] count = {0};
+        final Integer[] count = {0,0};
         PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:**/*.csv");
         try {
             Files.walkFileTree(dir, new SimpleFileVisitor<>() {
@@ -49,7 +49,8 @@ public class OrderProcessor {
                                     mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ||
                                     mode == Mode.INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish.plusDays(1))) && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ) {
                                 if (shopId == null || shopId == strings[0]) {
-                                    arrayList = Files.readAllLines(path,Charset.forName("windows-1251"));
+                                    arrayList = Files.readAllLines(path);
+                                    count[1] =5;
                                     List<OrderItem> orderItems = new ArrayList<>();
                                     double sum = 0;
                                     for (String s : arrayList) {
@@ -72,7 +73,7 @@ public class OrderProcessor {
         } catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return count[0];
+        return count[1];//count[0];
     }
     public List<Order> process(String shopId){
         ArrayList<Order> processList= new ArrayList<>();
