@@ -50,7 +50,6 @@ public class OrderProcessor {
                                     mode == Mode.INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish.plusDays(1))) && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ) {
                                 if (shopId == null || shopId == strings[0]) {
                                     arrayList = Files.readAllLines(path);
-                                    count[1] =5;
                                     List<OrderItem> orderItems = new ArrayList<>();
                                     double sum = 0;
                                     for (String s : arrayList) {
@@ -59,6 +58,7 @@ public class OrderProcessor {
                                         sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
                                     }
                                     orders.add(new Order(strings[0].trim(), strings[1].trim(), strings[2].trim(), ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
+                                    count[1] =5;
                                 }
                             }
                         } catch (Exception ex){
