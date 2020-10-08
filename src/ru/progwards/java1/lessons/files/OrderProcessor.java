@@ -10,7 +10,7 @@ import java.util.*;
 
 public class OrderProcessor {
     ArrayList<Order> orders;
-    private enum Mode {LEFT_INTERVAL,RIGHT_INTERVAL,ALL};
+    private enum Mode {LEFT_INTERVAL,RIGHT_INTERVAL,ALL,INTERVAL};
     Mode mode;
     private Path dir;
     public OrderProcessor(String startPath){
@@ -44,7 +44,7 @@ public class OrderProcessor {
                                     mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish)) ||
                                     mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start))) {
                                 if (shopId == null || shopId == strings[0]) {
-                                    arrayList = Files.readAllLines(path, Charset.forName("windows-1251"));
+                                    arrayList = Files.readAllLines(path);
                                     List<OrderItem> orderItems = new ArrayList<>();
                                     double sum = 0;
                                     for (String s : arrayList) {
@@ -127,7 +127,7 @@ public class OrderProcessor {
 
     public static void main(String[] args){
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
-        System.out.println(orderProcessor.loadOrders(null,null,null));
+        System.out.println(orderProcessor.loadOrders(LocalDate.of(2020, Month.OCTOBER, 8), LocalDate.of(2020, Month.OCTOBER, 9), null));
         System.out.println(orderProcessor.process(null));
         System.out.println((orderProcessor.statisticsByShop()));
         System.out.println(orderProcessor.statisticsByGoods());
