@@ -59,7 +59,6 @@ public class OrderProcessor {
                             count[0]++;
                             return FileVisitResult.CONTINUE;
                         }
-
                     }
                     return FileVisitResult.CONTINUE;
                 }
@@ -68,7 +67,7 @@ public class OrderProcessor {
         } catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-        return count[0];
+        return orders.size();//count[0];
     }
     public List<Order> process(String shopId){
         ArrayList<Order> processList= new ArrayList<>();
@@ -131,6 +130,7 @@ public class OrderProcessor {
         System.out.println(orderProcessor.loadOrders(null,null,null));
         System.out.println(orderProcessor.process(null));
         System.out.println((orderProcessor.statisticsByShop()));
+        System.out.println(orderProcessor.statisticsByGoods());
     }
 
 
