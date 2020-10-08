@@ -21,7 +21,7 @@ public class OrderProcessor {
         dir = Paths.get(startPath);
         mode=Mode.ALL;
     }
-    public int loadOrders(LocalDate start, LocalDate finish, String shopId) throws Exception{
+    public int loadOrders(LocalDate start, LocalDate finish, String shopId){
         if (start==null){
             mode=Mode.LEFT_INTERVAL;
             if (finish==null){
@@ -32,36 +32,41 @@ public class OrderProcessor {
         }
         final Integer[] count = {0};
         PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:**/*.csv");
-        Files.walkFileTree(dir, new SimpleFileVisitor<>() {
-            @Override
-            public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-               if(pathMatcher.matches(path)){
-                   List<String> arrayList;
-                   String [] strings =  path.getFileName().toString().replace(".csv","").split("-");
-                   if(strings.length!=3 || strings[0].length()!=3 || strings[1].length()!=6||strings[2].length()!=4){
-                      count[0]++;
-                      return FileVisitResult.CONTINUE;
-                   }
-                   if (mode == Mode.ALL ||
-                           mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish)) ||
-                           mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start))) {
-                       if (shopId == null || shopId == strings[0]) {
-                           arrayList = Files.readAllLines(path, Charset.forName("windows-1251"));
-                           List<OrderItem> orderItems = new ArrayList<>();
-                           double sum = 0;
-                           for (String s : arrayList) {
-                               String[] strs = s.split(",");
-                               orderItems.add(new OrderItem(strs[0], Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
-                               sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
-                           }
-                          orders.add(new Order(strings[0], strings[1], strings[2], ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
-                       }
-                   }
+        try {
+            Files.walkFileTree(dir, new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+                    if (pathMatcher.matches(path)) {
+                        List<String> arrayList;
+                        String[] strings = path.getFileName().toString().replace(".csv", "").split("-");
+                        if (strings.length != 3 || strings[0].length() != 3 || strings[1].length() != 6 || strings[2].length() != 4) {
+                            count[0]++;
+                            return FileVisitResult.CONTINUE;
+                        }
+                        if (mode == Mode.ALL ||
+                                mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish)) ||
+                                mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start))) {
+                            if (shopId == null || shopId == strings[0]) {
+                                arrayList = Files.readAllLines(path, Charset.forName("windows-1251"));
+                                List<OrderItem> orderItems = new ArrayList<>();
+                                double sum = 0;
+                                for (String s : arrayList) {
+                                    String[] strs = s.split(",");
+                                    orderItems.add(new OrderItem(strs[0], Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
+                                    sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
+                                }
+                                orders.add(new Order(strings[0], strings[1], strings[2], ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
+                            }
+                        }
 
-               }
-              return FileVisitResult.CONTINUE;
-            }
-        });
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+            });
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
         return count[0];
     }
     public List<Order> process(String shopId){
@@ -84,7 +89,6 @@ public class OrderProcessor {
         return processList;
     }
     public Map<String, Double> statisticsByShop(){
-
         return null;
     }
     public Map<String, Double> statisticsByGoods(){
@@ -94,7 +98,7 @@ public class OrderProcessor {
         return null;
     }
 
-    public static void main(String[] args)throws Exception {
+    public static void main(String[] args){
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
         orderProcessor.loadOrders(null,null,null);
         System.out.println(orderProcessor.process("111"));
