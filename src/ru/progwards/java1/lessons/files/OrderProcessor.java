@@ -49,7 +49,7 @@ public class OrderProcessor {
                                     mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ||
                                     mode == Mode.INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish.plusDays(1))) && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ) {
                                 if (shopId == null || shopId == strings[0]) {
-                                    arrayList = Files.readAllLines(path);
+                                    arrayList = Files.readAllLines(path,Charset.forName("windows-1251"));
                                     List<OrderItem> orderItems = new ArrayList<>();
                                     double sum = 0;
                                     for (String s : arrayList) {
