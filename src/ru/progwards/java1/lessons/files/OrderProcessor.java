@@ -1,5 +1,6 @@
 package ru.progwards.java1.lessons.files;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
@@ -18,20 +19,20 @@ public class OrderProcessor {
         dir = Paths.get(startPath);
         mode=Mode.ALL;
     }
-    public int loadOrders(LocalDate start, LocalDate finish, String shopId){
-        if (start==null){
-            mode=Mode.LEFT_INTERVAL;
-            if (finish==null){
+    public int loadOrders(LocalDate start, LocalDate finish, String shopId) {
+        if (start == null) {
+            mode = Mode.LEFT_INTERVAL;
+            if (finish == null) {
                 mode = Mode.ALL;
             }
         } else {
-            if (finish ==null){
-            mode = Mode.RIGHT_INTERVAL;
+            if (finish == null) {
+                mode = Mode.RIGHT_INTERVAL;
             } else {
-                mode=Mode.INTERVAL;
+                mode = Mode.INTERVAL;
             }
         }
-        final Integer[] count = {0,0};
+        final Integer[] count = {0, 0};
         PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher("glob:**/*.csv");
         try {
             Files.walkFileTree(dir, new SimpleFileVisitor<>() {
@@ -44,12 +45,13 @@ public class OrderProcessor {
                             if (strings.length != 3 || strings[0].length() != 3 || strings[1].length() != 6 || strings[2].length() != 4) {
                                 return FileVisitResult.CONTINUE;
                             }
+                            LocalDateTime lastModFile = LocalDateTime.ofInstant(ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toInstant(), ZoneId.systemDefault());
                             if (mode == Mode.ALL ||
-                                    mode == Mode.LEFT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish.plusDays(1))) ||
-                                    mode == Mode.RIGHT_INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ||
-                                    mode == Mode.INTERVAL && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isBefore(LocalDateTime.from(finish.plusDays(1))) && ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime().isAfter(LocalDateTime.from(start)) ) {
+                                    mode == Mode.LEFT_INTERVAL && lastModFile.isBefore(LocalDateTime.from(finish.atStartOfDay().plusDays(1))) ||
+                                    mode == Mode.RIGHT_INTERVAL && lastModFile.isAfter(LocalDateTime.from(start.atStartOfDay())) ||
+                                    mode == Mode.INTERVAL && lastModFile.isBefore(LocalDateTime.from(finish.atStartOfDay().plusDays(1))) && lastModFile.isAfter(LocalDateTime.from(start.atStartOfDay()))) {
                                 if (shopId == null || shopId == strings[0]) {
-                                    arrayList = Files.readAllLines(path);
+                                    arrayList = Files.readAllLines(path, Charset.forName("windows-1251"));
                                     List<OrderItem> orderItems = new ArrayList<>();
                                     double sum = 0;
                                     for (String s : arrayList) {
@@ -57,11 +59,11 @@ public class OrderProcessor {
                                         orderItems.add(new OrderItem(strs[0].trim(), Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
                                         sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
                                     }
-                                    orders.add(new Order(strings[0].trim(), strings[1].trim(), strings[2].trim(), ZonedDateTime.parse(Files.getLastModifiedTime(path).toString()).toLocalDateTime(), orderItems, sum));
-                                    count[1] =5;
+
+                                    orders.add(new Order(strings[0].trim(), strings[1].trim(), strings[2].trim(), lastModFile, orderItems, sum));
                                 }
                             }
-                        } catch (Exception ex){
+                        } catch (Exception ex) {
                             count[0]++;
                             return FileVisitResult.CONTINUE;
                         }
@@ -70,10 +72,10 @@ public class OrderProcessor {
                 }
 
             });
-        } catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        return count[0];//count[0];
+        return count[0];
     }
     public List<Order> process(String shopId){
         ArrayList<Order> processList= new ArrayList<>();
