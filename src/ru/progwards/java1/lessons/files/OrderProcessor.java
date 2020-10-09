@@ -59,7 +59,12 @@ public class OrderProcessor {
                                         orderItems.add(new OrderItem(strs[0].trim(), Integer.parseInt(strs[1].trim()), Double.parseDouble(strs[2].trim())));
                                         sum += Integer.parseInt(strs[1].trim()) * Double.parseDouble(strs[2].trim());
                                     }
-
+                                    orderItems.sort(new Comparator<OrderItem>() {
+                                        @Override
+                                        public int compare(OrderItem orderItem, OrderItem t1) {
+                                        return orderItem.googsName.compareTo(t1.googsName);
+                                        }
+                                    });
                                     orders.add(new Order(strings[0].trim(), strings[1].trim(), strings[2].trim(), lastModFile, orderItems, sum));
                                 }
                             }
