@@ -51,7 +51,7 @@ public class OrderProcessor {
                                     mode == Mode.RIGHT_INTERVAL && lastModFile.isAfter(LocalDateTime.from(start.atStartOfDay())) ||
                                     mode == Mode.INTERVAL && lastModFile.isBefore(LocalDateTime.from(finish.atStartOfDay().plusDays(1))) && lastModFile.isAfter(LocalDateTime.from(start.atStartOfDay()))) {
                                 if (shopId == null || shopId.equals(strings[0])) {
-                                    arrayList = Files.readAllLines(path,Charset.forName("windows-1251"));
+                                    arrayList = Files.readAllLines(path);
                                     List<OrderItem> orderItems = new ArrayList<>();
                                     double sum = 0;
                                     for (String s : arrayList) {
