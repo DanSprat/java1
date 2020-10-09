@@ -50,8 +50,8 @@ public class OrderProcessor {
                                     mode == Mode.LEFT_INTERVAL && lastModFile.isBefore(LocalDateTime.from(finish.atStartOfDay().plusDays(1))) ||
                                     mode == Mode.RIGHT_INTERVAL && lastModFile.isAfter(LocalDateTime.from(start.atStartOfDay())) ||
                                     mode == Mode.INTERVAL && lastModFile.isBefore(LocalDateTime.from(finish.atStartOfDay().plusDays(1))) && lastModFile.isAfter(LocalDateTime.from(start.atStartOfDay()))) {
-                                if (shopId == null || shopId == strings[0]) {
-                                    arrayList = Files.readAllLines(path);
+                                if (shopId == null || shopId.equals(strings[0])) {
+                                    arrayList = Files.readAllLines(path,Charset.forName("windows-1251"));
                                     List<OrderItem> orderItems = new ArrayList<>();
                                     double sum = 0;
                                     for (String s : arrayList) {
@@ -127,10 +127,20 @@ public class OrderProcessor {
         return treeMap;
     }
     public Map<LocalDate, Double> statisticsByDay(){
-        TreeMap<LocalDate,Double> treeMap = new TreeMap<>();
+        TreeMap<LocalDate,Double> treeMap = new TreeMap<>(new Comparator<LocalDate>() {
+            @Override
+            public int compare(LocalDate localDate, LocalDate t1) {
+                if(localDate.isBefore(t1)){
+                    return -1;
+                } else if (localDate.isAfter(t1)){
+                return  1;
+                } else return 0;
+            }
+        });
+
         for (Order x: orders){
-            if (treeMap.containsKey(x.datetime)){
-                treeMap.replace(x.datetime.toLocalDate(),treeMap.get(x.datetime)+x.sum);
+            if (treeMap.containsKey(x.datetime.toLocalDate())){
+                treeMap.replace(x.datetime.toLocalDate(),treeMap.get(x.datetime.toLocalDate())+x.sum);
             } else {
                 treeMap.put(x.datetime.toLocalDate(),x.sum);
             }
@@ -140,10 +150,11 @@ public class OrderProcessor {
 
     public static void main(String[] args){
         OrderProcessor orderProcessor= new OrderProcessor("C:\\Users\\Work\\IdeaProjects\\Progwards\\test");
-        System.out.println(orderProcessor.loadOrders(LocalDate.of(2020, Month.OCTOBER, 8), LocalDate.of(2020, Month.OCTOBER, 9), null));
+        System.out.println(orderProcessor.loadOrders(null, LocalDate.of(2020, Month.OCTOBER, 9), "S01"));
         System.out.println(orderProcessor.process(null));
         System.out.println((orderProcessor.statisticsByShop()));
         System.out.println(orderProcessor.statisticsByGoods());
+        System.out.println(orderProcessor.statisticsByDay());
     }
 
 
