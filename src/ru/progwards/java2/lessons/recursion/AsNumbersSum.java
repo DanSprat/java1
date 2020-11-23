@@ -7,46 +7,7 @@ public class AsNumbersSum {
        asNumberSum(number,0,number,number+1,string,prev);
        return string.toString();
     }
-    private static String asNumbersSum(int number,StringBuffer string,StringBuffer prev,int max,int absmax){
-        if (number==0) return null;
-        if (number==1 && max ==1){
-            string.append((" = "+prev + " + "+ 1));
-            return null;
-        }
-        if (number-1 >= max-number+1){
-            StringBuffer newS;
-            if (prev.length() == 0){
-                newS = new StringBuffer(Integer.toString(number-1));
-            } else {
-                newS = new StringBuffer(prev+" + "+ (number-1));
-            }
-            if (max-number+1 != 1){
-                if (prev.length() == 0){
-                    string.append(" = "+(number-1)+" + "+ (max-number+1));
-                } else {
-                    string.append(" = "+prev+" + "+(number-1)+" + "+ (max-number+1));
-                }
 
-            }
-            asNumbersSum(max-number+1,string,newS,max-number+1,max);
-        } else {
-            StringBuffer newS;
-            if (prev.length() ==0){
-                newS = new StringBuffer(Integer.toString(number));
-            } else {
-                newS = new StringBuffer(prev+" + "+ (number));
-            }
-            asNumbersSum(max-number,string,newS,max-number,absmax);
-        }
-        if (number-1 != 1) {
-            if ((number-1)*2 != max) {
-                asNumbersSum(number - 1, string, prev, max, absmax);
-            } else {
-                asNumbersSum(number - 2, string, prev, max, absmax);
-            }
-        }
-        return null;
-    }
     private static void asNumberSum(int number,int sum,int max,int prev,StringBuffer out, StringBuffer middle){
         if (number==0) return;
         if (number > prev){

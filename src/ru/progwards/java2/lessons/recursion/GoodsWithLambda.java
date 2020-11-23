@@ -46,14 +46,40 @@ public class GoodsWithLambda {
     }
 
     public List<Goods> сountBetween(int count1, int count2){
-        Predicate<Goods> lower = x -> x.available<count1;
-        ArrayList<Goods> filtered = (ArrayList <Goods>)goods.stream().filter(lower.and(x->x.available>count2));
+        Predicate<Goods> lower = x -> x.available>count1;
+
+        ArrayList<Goods> filtered = (ArrayList <Goods>)goods.stream().filter(lower.and(x->x.available<count2)).collect(Collectors.toList());
         filtered.sort(Comparator.comparing(x->x.available));
         return filtered;
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws Exception {
+        ArrayList <Goods> goods = new ArrayList<>();
+        goods.add(new Goods("CCC","005C",10,210.0,Instant.now()));
+        Thread.sleep(100);
+        goods.add(new Goods("AAA","004A",9,200.0,Instant.now()));
+        Thread.sleep(100);
+        goods.add(new Goods("EEE","005A",10,220.0,Instant.now()));
+        Thread.sleep(100);
+        Instant instant = Instant.now();
+        goods.add(new Goods("FFF","005B",15,2210.0,Instant.now()));
+        goods.add(new Goods("CCC","007A",6,20.0,Instant.now()));
+        goods.add(new Goods("DDD","007B",2,230.0,Instant.now()));
+        GoodsWithLambda goodsWithLambda= new GoodsWithLambda();
+        goodsWithLambda.setGoods(goods);
+        goodsWithLambda.sortByNumber().forEach(System.out::println);
+        System.out.println("\n");
+        goodsWithLambda.sortByName().forEach((System.out::println));
+        System.out.println("\n");
+        goodsWithLambda.sortByPartNumber().forEach((System.out::println));
+        System.out.println("\n");
+        goodsWithLambda.sortByAvailabilityAndNumber().forEach((System.out::println));
+        System.out.println("\n");
+        goodsWithLambda.expiredAfter(instant).forEach((System.out::println));
+        System.out.println("\n");
+        goodsWithLambda.сountLess(10).forEach((System.out::println));
+        System.out.println("\n");
+        goodsWithLambda.сountBetween(5,10).forEach((System.out::println));
     }
 
 }

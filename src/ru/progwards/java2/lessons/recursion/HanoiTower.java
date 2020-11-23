@@ -42,7 +42,8 @@ public class HanoiTower {
         }
     }
     public void move(int from, int to){
-        print();
+        if (trace == true)
+            print();
         move(from,getPin(from, to),size-1);
         pins.get(to).addLast(pins.get(from).pollLast());
         move(getPin(from, to),to,size-1);
@@ -51,11 +52,13 @@ public class HanoiTower {
     private void move(int from,int to,int count){
         if (count == 1){
             pins.get(to).addLast(pins.get(from).pollLast());
-            print();
+            if (trace == true)
+                print();
         } else {
             move(from,getPin(from, to),count-1);
             pins.get(to).addLast(pins.get(from).pollLast());
-            print();
+            if (trace == true)
+                print();
             move(getPin(from, to),to,count-1);
         }
     }
@@ -81,7 +84,9 @@ public class HanoiTower {
 
     public static void main(String[] args) {
         HanoiTower hanoiTower = new HanoiTower(5,0);
-        hanoiTower.setTrace(true);
+        //hanoiTower.setTrace(true);
+        hanoiTower.print();
         hanoiTower.move(0,2);
+        hanoiTower.print();
 }
 }
