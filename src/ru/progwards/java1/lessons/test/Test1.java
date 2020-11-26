@@ -172,6 +172,26 @@ public class Test1 {
             return false;
         }
     }
+    public static <T>ArrayList <T> from(T arr []){
+        ArrayList<T> list = new ArrayList<>();
+        for(T x:arr){
+            list.add(x);
+        }
+        return list;
+    }
+    public static<T> void swap(List<T> arr,int first,int second){
+        T elem = arr.get(first);
+        arr.set(first,arr.get(second));
+        arr.set(second,elem);
+    }
+    enum CompareResult {LESS, EQUAL, GREATER};
+    public static <T extends Comparable>CompareResult compare(T first,T second){
+        if (first.compareTo(second) == -1)
+            return CompareResult.LESS;
+        if (first.compareTo(second) == 0)
+            return CompareResult.EQUAL;
+        return CompareResult.GREATER;
+    }
     public static void main(String[] args) throws IOException{
         replaceF("s");
         System.out.println(createFolder("name1"));
