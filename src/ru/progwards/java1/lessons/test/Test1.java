@@ -7,6 +7,8 @@ import java.nio.file.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static ru.progwards.java1.lessons.test.Test1.checkAndAdd;
 
@@ -193,6 +195,8 @@ public class Test1 {
         return CompareResult.GREATER;
     }
     public static void main(String[] args) throws IOException{
+        BiFunction<Integer,Integer,Integer> plus = (x, y)-> x+y;
+        System.out.println(plus.apply(15,20));
         replaceF("s");
         System.out.println(createFolder("name1"));
         ZoneId zid1 = ZoneId.of("Europe/Moscow");

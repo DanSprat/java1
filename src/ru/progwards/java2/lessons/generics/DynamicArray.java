@@ -61,6 +61,4 @@ public class DynamicArray <T>{
         array.remove(0);
         array.add(5);
     }
-
-
 }
