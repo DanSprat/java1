@@ -32,7 +32,6 @@ public class BiDirList<T> implements Iterable<T>{
         }
     }
 
-
     private class Node <T> {
         Node<T> next;
         Node<T> previous;
