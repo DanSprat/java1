@@ -40,7 +40,8 @@ public class  DoubleHashTable <K extends HashValue,V> implements Iterable<V>{
     @Override
     public void forEach(Consumer<? super V> action) {
         for (var x:table){
-            action.accept(x.value);
+            if (x!=null && x.status!=Status.DELETED)
+                action.accept(x.value);
         }
     }
 
@@ -174,12 +175,9 @@ public class  DoubleHashTable <K extends HashValue,V> implements Iterable<V>{
         final Random random = new Random();
         random.setSeed(28);
         DoubleHashTable<IntKey,String> hashTable = new DoubleHashTable<>();
-        for (int i = 0;i<24;++i){
-          hashTable.add(new IntKey(random.nextInt()),"Число "+ i);
+        for (int i = 0;i<24;++i) {
+            hashTable.add(new IntKey(random.nextInt()), "Число " + i);
         }
-        for(var x:hashTable){
-            System.out.println(x);
-        }
-
+        hashTable.forEach(System.out::println);
     }
 }
