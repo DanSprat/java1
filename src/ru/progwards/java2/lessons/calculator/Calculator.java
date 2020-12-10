@@ -40,7 +40,7 @@ public class Calculator {
                     if (stack.isEmpty() || stack.peekLast().equals("(")) {
                         stack.addLast(String.valueOf(x));
                     } else {
-                        while (!stack.isEmpty() && op.priority >= hashtable.get(stack.peekLast()).priority) {
+                        while ((!stack.isEmpty() && !stack.peekLast().equals("(")) && op.priority >= hashtable.get(stack.peekLast()).priority) {
                             postfix.add(stack.pollLast());
                         }
                         stack.addLast(String.valueOf(x));
@@ -48,20 +48,21 @@ public class Calculator {
                 }
             }
         }
-        postfix.add(number);
+        if(!number.isEmpty())
+            postfix.add(number);
         while(!stack.isEmpty()){
             postfix.add(stack.pollLast());
         }
         return postfix;
     }
-    public static double calculate(String task){
+    public static double calculate(String expression){
         Hashtable<String,MyOperation> hashtable = new Hashtable<>();
         hashtable.put("+",new MyOperation(2,(x,y)-> Double.valueOf(x+y)));
         hashtable.put("-",new MyOperation(2,(x,y)-> Double.valueOf(x-y)));
         hashtable.put("*",new MyOperation(1,(x,y)-> Double.valueOf(x*y)));
         hashtable.put("/",new MyOperation(1,(x,y)-> Double.valueOf(x/y)));
 
-        ArrayList<String> postfix = toPostfix(task,hashtable);
+        ArrayList<String> postfix = toPostfix(expression,hashtable);
         ArrayDeque<Double> stack = new ArrayDeque<>();
         for (var x: postfix){
             if (hashtable.get(x) == null){
@@ -76,6 +77,6 @@ public class Calculator {
     }
 
     public static void main(String[] args) {
-        System.out.println(calculate("(1+3)*(5+2)-10"));
+        System.out.println(calculate("(15+5)*20+1"));
     }
 }
