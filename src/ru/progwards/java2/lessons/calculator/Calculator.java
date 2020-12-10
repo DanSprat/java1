@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.function.BiFunction;
 
+
+// Решил задачу чуть больше чем за час, если нужно будет - загружу видео с процессом написания кода
 public class Calculator {
     private  static class MyOperation{
         int priority;
