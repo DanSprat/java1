@@ -195,8 +195,11 @@ public class Test1 {
         return CompareResult.GREATER;
     }
     public static void main(String[] args) throws IOException{
+        Path path = Paths.get("C:\\Users\\Work\\Documents\\МатМоделирование");
+        byte aaa []= Files.readAllBytes(path.resolve("105.png"));
+        int j =3,k=7;
+        System.out.println(3+Integer.MAX_VALUE+Integer.MAX_VALUE+2);
         BiFunction<Integer,Integer,Integer> plus = (x, y)-> x+y;
-        System.out.println(plus.apply(15,20));
         replaceF("s");
         System.out.println(createFolder("name1"));
         ZoneId zid1 = ZoneId.of("Europe/Moscow");
@@ -230,9 +233,9 @@ public class Test1 {
         Arrays.sort(a2);
         System.out.println(Arrays.equals(a1, a2));
         System.out.println(ret((byte)15));
-        BigDecimal a = new BigDecimal("10.0");
+        //BigDecimal a = new BigDecimal("10.0");
         BigDecimal b = new BigDecimal("10.0");
-        System.out.println(a.multiply(b).compareTo(a.multiply(b)));
+        //System.out.println(a.multiply(b).compareTo(a.multiply(b)));
         Integer as =null;
         System.out.println(sqr(as));
 
