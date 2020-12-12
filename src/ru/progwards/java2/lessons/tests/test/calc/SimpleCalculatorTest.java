@@ -90,7 +90,7 @@ public class SimpleCalculatorTest {
     }
 
     @RunWith(Parameterized.class)
-    public static class diffExpectedSimpleCalculatorTest{
+    public static class diffExceptionSimpleCalculatorTest{
         @Parameterized.Parameter
         public int val1;
         @Parameterized.Parameter(1)
@@ -140,7 +140,7 @@ public class SimpleCalculatorTest {
     }
 
     @RunWith(Parameterized.class)
-    public static class multExpectedSimpleCalculatorTest{
+    public static class multExceptionSimpleCalculatorTest{
         @Parameterized.Parameter(0)
         public int val1;
         @Parameterized.Parameter(1)
@@ -188,7 +188,7 @@ public class SimpleCalculatorTest {
     }
 
     @RunWith(Parameterized.class)
-    public static class divExpectedSimpleCalculatorTest{
+    public static class divExceptionSimpleCalculatorTest{
         @Parameterized.Parameter(0)
         public int val1;
         @Parameterized.Parameter(1)
