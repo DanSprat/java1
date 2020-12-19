@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FruitBox  extends ArrayList {
+public class FruitBox <T extends Fruit> extends ArrayList {
     public FruitBox(){
          super();
     }
@@ -14,7 +14,7 @@ public class FruitBox  extends ArrayList {
         return size()*fruit.weight;
     }
 
-    @Override
+
     public boolean add(Object o) {
         if (o instanceof Fruit){
             if (size() == 0 || o.getClass().equals(super.get(0).getClass())){
@@ -31,11 +31,12 @@ public class FruitBox  extends ArrayList {
     public String toString(){
         return null;
     };
-    public void moveTo(FruitBox box){
+    public void moveTo(FruitBox  box){
         if (size() == 0 ) return;
-        if (box.size() == 0 || box.get(0).getClass().equals(super.get(0))){
+        if (box.size() == 0 || box.get(0).getClass().equals(this.get(0).getClass())){
             for (int i=0;i<size();i++)
                 box.add(super.get(i));
+            this.clear();
         } else {
             throw new UnsupportedOperationException();
         }
@@ -48,12 +49,13 @@ public class FruitBox  extends ArrayList {
     }
 
     public static void main(String[] args) {
-        FruitBox  orangeFruitBox = new FruitBox();
-        orangeFruitBox.add(new Orange());
-        FruitBox  appleFruitBox = new FruitBox();
+        FruitBox <Orange> orangeFruitBox = new FruitBox<>();
+        FruitBox <Apple> appleFruitBox = new FruitBox<>();
+        FruitBox<Apple> appleFruitBox1 = new FruitBox<>();
+        appleFruitBox1.add(new Apple());
         appleFruitBox.add(new Apple());
-        System.out.println(appleFruitBox.compareTo(orangeFruitBox));
-        appleFruitBox.moveTo(orangeFruitBox);
+        appleFruitBox.moveTo(appleFruitBox1);
+        System.out.println(appleFruitBox.compareTo(appleFruitBox1));
 
     }
 }

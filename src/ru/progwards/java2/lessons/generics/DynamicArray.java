@@ -34,15 +34,30 @@ public class DynamicArray <T>{
     public void insert(int pos,T val){
         if (pos>=size || pos<0)
             throw new IndexOutOfBoundsException();
-        arr[pos] = val;
+        if (size == arr.length){
+            T array [] = Arrays.copyOf(arr,arr.length);
+            arr =(T[]) new Object[2*arr.length];
+            System.arraycopy(array,0,arr,0,pos);
+            System.arraycopy(array,pos,arr,pos+1,size-pos);
+            arr[pos]=val;
+        } else {
+            for (int i = size -1;i>=pos;--i){
+                arr[i] =arr[i+1];
+            }
+            arr[pos] = val;
+        }
+        size++;
     }
     public void remove(int pos){
         if (pos>=size || pos<0)
             throw new IndexOutOfBoundsException();
-        T [] array = Arrays.copyOf(arr,arr.length);
-        arr  =(T[]) new Object[arr.length-1];
-        System.arraycopy(array,0,arr,0,pos);
-        System.arraycopy(array,pos+1,arr,pos,arr.length-pos-1);
+        if (pos == size-1){
+            arr[pos] =null;
+        } else {
+            for (int i = pos + 1; i < size; ++i) {
+                arr[i-1] = arr[i];
+            }
+        }
         size--;
     }
     public int size(){
@@ -50,15 +65,13 @@ public class DynamicArray <T>{
     }
 
     public static void main(String[] args) {
-        DynamicArray<Integer> array =  new DynamicArray<>();
-        array.add(0);
-        array.add(1);
-        array.add(2);
-        array.add(3);
-        array.add(4);
-        array.remove(3);
-        array.remove(3);
-        array.remove(0);
-        array.add(5);
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(0);
+        arrayList.add(1);
+        DynamicArray<Integer> list =  new DynamicArray<>();
+        list.add(0);
+        list.add(2);
+        list.insert(1,1);
+        System.out.println(list.get(2));
     }
 }

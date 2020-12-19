@@ -119,6 +119,32 @@ public class Test1 {
       }
       return hashSet;
     }
+    static boolean task1(double x1,double x2,double x3){
+        double d = 3*x1+7*x2+x3;
+        if (d==4) return true;
+        else return false;
+    }
+    static boolean task2(double x1,double x2,double x3){
+        if(4*x1+7*x2+10*x3<=12) return true;
+        else return false;
+    }
+    static boolean task3(double x1,double x2,double x3){
+        if(2*x1-x2-7*x3>=-7) return true;
+        else return false;
+    }
+    static boolean task4(double x1,double x2,double x3){
+        if(7*x1-3*x2+7*x3<=2) return true;
+        else return false;
+    }
+    static boolean task5(double x1,double x2,double x3){
+        if(8*x1+7*x2<=1) return true;
+        else return false;
+    }
+    static boolean task6(double x1,double x2,double x3){
+        if(8*x1+7*x2>=-4) return true;
+        else return false;
+    }
+
     static void pqTest() {
         PriorityQueue pQueue = new PriorityQueue<>();
         pQueue.offer(10);
@@ -195,6 +221,8 @@ public class Test1 {
         return CompareResult.GREATER;
     }
     public static void main(String[] args) throws IOException{
+        System.out.println(task1(-351.0/95,4.0/95,559.0/665));
+
         Path path = Paths.get("C:\\Users\\Work\\Documents\\МатМоделирование");
         byte aaa []= Files.readAllBytes(path.resolve("105.png"));
         int j =3,k=7;
