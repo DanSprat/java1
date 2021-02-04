@@ -2,6 +2,11 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/s" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/ru/progwards/java2/lessons/builders" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/ru/progwards/java2/lessons/builders/SimpleCalculator" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/ru/progwards/java2/lessons/builders/mailSender" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/ru/progwards/java2/lessons/builders/mailSender" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/ru/progwards/java2/lessons/builders/mailSender" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

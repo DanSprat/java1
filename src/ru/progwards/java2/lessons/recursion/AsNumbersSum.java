@@ -42,7 +42,7 @@ public class AsNumbersSum {
 
     }
     public static void main(String[] args) {
-        String string = asNumbersSum(1);
+        String string = asNumbersSum(7);
         System.out.println(string);
     }
 }

@@ -13,7 +13,7 @@ public class ArraySort {
     }
 
     public static void main(String[] args) {
-        Integer arr [] = {2,3,5,1,4};
+        String arr [] = {"1","3","5","2","4"};
         int String [] = new int [5];
 
         sort(arr);

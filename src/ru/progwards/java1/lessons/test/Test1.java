@@ -9,6 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.jar.Attributes;
+import java.util.jar.JarInputStream;
+import java.util.jar.Manifest;
 
 import static ru.progwards.java1.lessons.test.Test1.checkAndAdd;
 
@@ -221,6 +224,14 @@ public class Test1 {
         return CompareResult.GREATER;
     }
     public static void main(String[] args) throws IOException{
+        Path pathFile = Paths.get("C:\\Users\\Work\\IdeaProjects\\SimpleCalculator\\target\\SimpleCalculator-1.0-SNAPSHOT-jar-with-dependencies.jar");
+        FileInputStream is = new FileInputStream(pathFile.toString());
+        JarInputStream jarStream = new JarInputStream(is);
+        Manifest mf = jarStream.getManifest();
+        Attributes attributes = mf.getMainAttributes();
+
+
+
         System.out.println(task1(-351.0/95,4.0/95,559.0/665));
 
         Path path = Paths.get("C:\\Users\\Work\\Documents\\МатМоделирование");
