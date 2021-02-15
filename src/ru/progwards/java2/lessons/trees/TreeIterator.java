@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 
-public class TreeIterator <K extends Comparable<K>,V> implements Iterator <V> {
+public class TreeIterator <K extends Comparable<K>,V> implements Iterator <BinaryTree<K,V>.TreeNode<K,V>> {
     BinaryTree.TreeNode head;
     BinaryTree.TreeNode current;
     BinaryTree.TreeNode last;
@@ -28,9 +28,9 @@ public class TreeIterator <K extends Comparable<K>,V> implements Iterator <V> {
     }
 
     @Override
-    public V next() {
-        V val;
-        val = (V) current.value;
+    public BinaryTree<K, V>.TreeNode<K, V> next() {
+        BinaryTree<K, V>.TreeNode<K, V> val;
+        val = current;
         if (last == current.left || last ==null){
             if (current.right == null){
                 if (current.parent.left ==current || current.parent ==null){
@@ -111,7 +111,7 @@ public class TreeIterator <K extends Comparable<K>,V> implements Iterator <V> {
 
     public static void main(String[] args) {
         BinaryTree<Integer,Integer> tree = new BinaryTree<>();
-        Random generator = new Random(10);
+        Random generator = new Random(1000);
         for (int i=0;i<10000;i++){
             int i1 =generator.nextInt();
             tree.add(i1,i1);
