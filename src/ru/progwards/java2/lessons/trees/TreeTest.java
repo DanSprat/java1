@@ -1,9 +1,7 @@
 package ru.progwards.java2.lessons.trees;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TreeTest {
