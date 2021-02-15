@@ -224,6 +224,7 @@ public class Test1 {
         return CompareResult.GREATER;
     }
     public static void main(String[] args) throws IOException{
+
         Path pathFile = Paths.get("C:\\Users\\Work\\IdeaProjects\\SimpleCalculator\\target\\SimpleCalculator-1.0-SNAPSHOT-jar-with-dependencies.jar");
         FileInputStream is = new FileInputStream(pathFile.toString());
         JarInputStream jarStream = new JarInputStream(is);
