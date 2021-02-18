@@ -66,7 +66,7 @@ public class Heap {
     public int malloc(int size){
         Block block = freeBlocks.ceiling(new Block(-1,size));
         if (block == null){
-            throw new NullPointerException("Беда!");
+            throw new NullPointerException();
         } else {
             int ptr = block.ptr+size;
             busyBlocks.put(block.ptr,size);
@@ -86,7 +86,7 @@ public class Heap {
         if (codeMap.isEmpty()) {
             Integer block = busyBlocks.remove(ptr);
             if (block == null) {
-                throw new NullPointerException("Беда 2");
+                throw new NullPointerException();
             } else {
                 for (int i = ptr; i < block + ptr; i++) {
                     bytes[i] = 0;
@@ -97,7 +97,7 @@ public class Heap {
         } else {
             Integer block = busyBlocks.remove(ptr);
             if (block == null) {
-                throw new NullPointerException("Беда 2");
+                throw new NullPointerException();
             } else {
                 for (int i = codeMap.get(ptr); i < block + codeMap.get(ptr); i++) {
                     bytes[i] = 0;
