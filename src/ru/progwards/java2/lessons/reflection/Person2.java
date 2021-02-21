@@ -14,8 +14,8 @@ class Person2 {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(Integer name) {
+
     }
     public boolean getSex() {
         return sex;
