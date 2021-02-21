@@ -1,4 +1,23 @@
 package ru.progwards.java2.lessons.reflection;
 
-public class Person2 {
+import java.util.HashMap;
+import java.util.List;
+
+class Person2 {
+    private String name;
+    private int age;
+    private boolean sex;
+    private List<Integer> list;
+    private HashMap<Integer,String> hashMap;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public boolean getSex() {
+        return sex;
+    }
 }

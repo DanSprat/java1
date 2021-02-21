@@ -5,10 +5,10 @@ import java.lang.reflect.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+
 
 public class ClassInspector {
-    private static void generic(StringBuilder stringBuilder,Type type) throws ClassNotFoundException {
+    protected static void generic(StringBuilder stringBuilder,Type type) throws ClassNotFoundException {
         if (type instanceof ParameterizedType) {
             ParameterizedType pt = (ParameterizedType)type;
             Type[] args = pt.getActualTypeArguments();

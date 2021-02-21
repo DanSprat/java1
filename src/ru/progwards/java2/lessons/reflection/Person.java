@@ -16,6 +16,7 @@ public  class Person  extends Person2 implements Comparable<Person>,Iterable<Per
     public String getName() {
         return name;
     }
+
     public  void setIntegers(List<Integer> integers){
         this.integers = integers;
     }
