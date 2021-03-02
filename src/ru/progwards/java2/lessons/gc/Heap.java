@@ -1,6 +1,6 @@
 package ru.progwards.java2.lessons.gc;
 
-import java.awt.List;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -159,9 +159,9 @@ public class Heap {
             if (block == null) {
                 throw new  NullPointerException();
             } else {
-                /*for (int i = ptr; i < block + ptr; i++) {
+                for (int i = ptr; i < block + ptr; i++) {
                     bytes[i] = 0;
-                }*/
+                }
                 boolean b = freeBlocks.add(new Block(ptr, block));
                 //codeMap.remove(ptr);
             }
@@ -170,9 +170,9 @@ public class Heap {
             if (block == null) {
                 throw new NullPointerException();
             } else {
-               /* for (int i = codeMap.get(ptr); i < block + codeMap.get(ptr); i++) {
+                for (int i = codeMap.get(ptr); i < block + codeMap.get(ptr); i++) {
                     bytes[i] = 0;
-                }*/
+                }
 
                 freeBlocks.add(new Block(ptr, block));
                 codeMap.remove(ptr);
@@ -260,7 +260,7 @@ public class Heap {
         System.out.println(integerArrayList);
         heap.free(integerArrayList.get(5));
         heap.compact();
-
+        heap.malloc(5);
 
     }
 }

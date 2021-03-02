@@ -4,20 +4,60 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
+/**
+ * Класс АВЛ дерева
+ * @author DanSprat
+ * @version 1.0
+ * @param <K> Тип ключа
+ * @param <V> Тип значения
+ */
 public class AvlTree <K extends Comparable<K>,V> {
-    public class TreeNode <K extends Comparable<K>,V> {
-        K key;
-        V value;
-        TreeNode left;
-        TreeNode right;
-        TreeNode parent;
-        Integer height;
+    /**
+     * Звено АВЛ дерева
+     * @param <K> Тип ключа
+     * @param <V> Тип значения
+     */
+    protected class TreeNode <K extends Comparable<K>,V> {
+        /**
+         * Ключ
+         */
+        private K key;
+        /**
+         * Значение
+         */
+        private V value;
+        /**
+         * Левое поддерво
+         */
+        private TreeNode left;
+        /**
+         * Правое поддерво
+         */
+        private TreeNode right;
+        /**
+         * Узел - "Родитель"
+         */
+        private TreeNode parent;
+        /**
+         * Высота поддерева
+         */
+        private Integer height;
+
+        /**
+         * Констурктор создания звена по ключу и значению
+         * @param key Ключ
+         * @param value Значение
+         */
         public TreeNode(K key, V value){
             this.key= key;
             this.value= value;
             height=1;
         }
 
+        /**
+         * Вычисление баланса поддереева
+         * @return Баланс поддерева
+         */
         public int balance(){
             int l;
             int r;
@@ -32,8 +72,11 @@ public class AvlTree <K extends Comparable<K>,V> {
             return l-r;
         }
 
-
-        public TreeNode <K,V> findMin(){
+        /**
+         * Поиск минимума
+         * @return Лист с минимальным ключом
+         */
+        private TreeNode <K,V> findMin(){
             if (this.left == null){
                 return this;
             } else {
@@ -41,26 +84,41 @@ public class AvlTree <K extends Comparable<K>,V> {
             }
         }
 
-        public TreeNode<K,V> findMax(){
+        /**
+         * Поиск максимума
+         * @return Лист с максимальным ключом
+         */
+        private TreeNode<K,V> findMax(){
             if (this.right == null){
                 return this;
             } else {
                 return this.right.findMax();
             }
         }
-
-        public TreeNode <K,V> deleteMin(){
+        /**
+         * Удаление минимума
+         * @return Лист с минимальным ключом
+         */
+        private TreeNode <K,V> deleteMin(){
             TreeNode <K,V> tmp = this.findMin();
             tmp.parent.left = null;
             return tmp;
         }
-
-        public TreeNode <K,V> deleteMax(){
+        /**
+         * Удаление максимума
+         * @return Лист с максимальным ключом
+         */
+        private TreeNode <K,V> deleteMax(){
             TreeNode <K,V> tmp = this.findMax();
             tmp.parent.right = null;
             return tmp;
         }
 
+        /**
+         * Поиск звена по плючу
+         * @param key Ключ
+         * @return Звено с соответствующим ключом
+         */
         private TreeNode<K,V> find(K key){
             int cmp = key.compareTo(this.key);
             if (cmp>0){
@@ -80,7 +138,11 @@ public class AvlTree <K extends Comparable<K>,V> {
             return this;
         }
 
-        void add (TreeNode<K,V> treeNode){
+        /**
+         * Вставка звена
+         * @param treeNode Звено
+         */
+        public void add (TreeNode<K,V> treeNode){
             int cmp = treeNode.key.compareTo(key);
             if (cmp == 0){
                 value = treeNode.value;
@@ -94,7 +156,12 @@ public class AvlTree <K extends Comparable<K>,V> {
                 treeNode.parent=this;
             }
         }
-        TreeNode <K,V> delete(){
+
+        /**
+         * Удаление звена
+         * @return Удаленное звено
+         */
+        public TreeNode <K,V> delete(){
           if (left !=null || right!=null){
               TreeNode<K,V> tmp;
               if (this.balance()>0){
@@ -119,9 +186,18 @@ public class AvlTree <K extends Comparable<K>,V> {
               return this;
           }
         }
+
+        /**
+         *
+         * @return Строка формата Key: {key} Value: {value}
+         */
         public String toString() { return "Key: "+ key + " Value: "+ value;}
 
-        public void process (Consumer<TreeNode<K,V>>consumer){
+        /**
+         * Метод для использования функционального интерфейса - consumer на каждый элемент children данного звена
+         * @param consumer метод "Потребитель"
+         */
+        private void process (Consumer<TreeNode<K,V>>consumer){
             if (left!=null){
                 left.process(consumer);
             }
@@ -133,28 +209,59 @@ public class AvlTree <K extends Comparable<K>,V> {
 
     }
 
-    TreeNode <K,V> head;
+    /**
+     * Вершина дерева
+     */
+    private TreeNode <K,V> head;
 
+    /**
+     * Получение высоты у поддерева
+     * @param node - Поддерево
+     * @return Высота
+     */
     private int getHeight(TreeNode <K,V> node){
         if (node == null)
             return 0;
         return node.height;
     }
+
+    /**
+     * Метод для использования функционального интерфейса - consumer на каждый элемент дерева
+     * @param consumer метод "Потребитель"
+     */
     public void process(Consumer<TreeNode<K,V>>consumer){
         head.process(consumer);
     }
+
+    /**
+     * Поиск значения по ключу
+     * @param key Ключ
+     * @return Значение найденное по соответсвующему ключу
+     * @exception NullPointerException несуществующий ключ
+     */
     public V find(K key){
         if (head == null){
-            throw  new NullPointerException();
+            throw new NullPointerException();
         } else {
             TreeNode <K,V> treeNode = head.find(key);
             return treeNode.key.compareTo(key) == 0? treeNode.value : null;
         }
     }
+
+    /**
+     * Вставить элемент в дерево
+     * @param key Ключ
+     * @param value Значение
+     */
      public void put (K key,V value){
         add(new TreeNode<>(key,value));
      }
-     public  void  add (TreeNode<K,V> node){
+
+    /**
+     * Вставка узла в дерево
+     * @param node Узел
+     */
+    private void add (TreeNode<K,V> node){
         if (head == null){
             head  = node;
         } else {
@@ -162,10 +269,21 @@ public class AvlTree <K extends Comparable<K>,V> {
             balance(node);
         }
      }
+
+    /**
+     * Удаление элемента по ключу
+     * @param key Ключ
+     */
      public void delete(K key){
         internalDelete(key);
      }
-     public TreeNode<K,V> internalDelete(K key){
+
+    /**
+     * Удаление узла по ключу
+     * @param key Ключ
+     * @return Узел
+     */
+     private TreeNode<K,V> internalDelete(K key){
         if (head == null){
             throw new NullPointerException();
         }
@@ -194,6 +312,10 @@ public class AvlTree <K extends Comparable<K>,V> {
         return found;
      }
 
+    /**
+     * Проверка: сбалансировано ли поддерево
+     * @param node поддерво
+     */
      private void balance(TreeNode<K,V> node){
         if (node == null){
             return;
@@ -221,7 +343,13 @@ public class AvlTree <K extends Comparable<K>,V> {
             }
         }
      }
-     public TreeNode <K,V> smallLeft(TreeNode<K,V> a){
+
+    /**
+     * Малое левое вращение
+     * @param a Узел относительно которого идет вращение
+     * @return Сссылка на новый узел, который встал на место узла a
+     */
+     private TreeNode <K,V> smallLeft(TreeNode<K,V> a){
          TreeNode <K,V> c = a.right.left;
          TreeNode <K,V> b = a.right;
          a.right = c;
@@ -245,7 +373,13 @@ public class AvlTree <K extends Comparable<K>,V> {
          b.height = Math.max(getHeight(b.right),getHeight(b.left))+1;
          return b;
      }
-    public TreeNode <K,V> smallRight(TreeNode<K,V> a){
+
+    /**
+     * Малое правое вращение
+     * @param a Узел относительно которого идет вращение
+     * @return Сссылка на новый узел, который встал на место узла 'a'
+     */
+    private TreeNode <K,V> smallRight(TreeNode<K,V> a){
         TreeNode<K,V> c = a.left.right;
         TreeNode<K,V> b = a.left;
         a.left = c;
@@ -270,7 +404,12 @@ public class AvlTree <K extends Comparable<K>,V> {
 
 
     }
-    public TreeNode <K,V> bigLeft(TreeNode <K,V> a){
+    /**
+     * Большое левое вращение
+     * @param a Узел относительно которого идет вращение
+     * @return Сссылка на новый узел, который встал на место узла 'a'
+     */
+    private TreeNode <K,V> bigLeft(TreeNode <K,V> a){
         TreeNode<K,V> b = a.right;
         TreeNode<K,V> c = a.right.left;
         a.right = b.left.left;
@@ -301,7 +440,12 @@ public class AvlTree <K extends Comparable<K>,V> {
 
         return c;
     }
-    public TreeNode <K,V> bigRight(TreeNode <K,V> a){
+    /**
+     * Большое правое левое вращение
+     * @param a Узел относительно которого идет вращение
+     * @return Сссылка на новый узел, который встал на место узла 'a'
+     */
+    private TreeNode <K,V> bigRight(TreeNode <K,V> a){
         TreeNode<K,V> b = a.left;
         TreeNode<K,V> c = a.left.right;
         a.left = c.right;
@@ -331,6 +475,12 @@ public class AvlTree <K extends Comparable<K>,V> {
         c.height =  Math.max(a.height,b.height)+1;
         return c;
     }
+
+    /**
+     * Проверка: сбалансировано ли поддерево
+     * @param node Поддерево
+     * @return True / False
+     */
     private boolean isAvl(TreeNode<K,V> node){
         if (node.left!=null){
             boolean is =  isAvl(node.left);
@@ -347,18 +497,31 @@ public class AvlTree <K extends Comparable<K>,V> {
         }
         return true;
     }
-    public boolean isAvl(){
+
+    /**
+     * Проверка: сбалансировано ли дерево
+     * @return True / False
+     */
+    private boolean isAvl(){
         return isAvl(head);
     }
+
+    /**
+     *  Конструктор по умолчанию. Создает пустое АВЛ дерево.
+     */
+    public AvlTree(){
+
+    }
+
+    /**
+     * Поменять ключ у объекта
+     * @param oldKey Старый ключ
+     * @param newKey Новый ключ
+     */
     public void change(K oldKey,K newKey){
         TreeNode<K,V> delete = internalDelete(oldKey);
         delete.key = newKey;
         add(delete);
     }
-
-    public static void main(String[] args) {
-    }
-
-
 
 }

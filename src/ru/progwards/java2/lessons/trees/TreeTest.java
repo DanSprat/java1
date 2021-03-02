@@ -86,8 +86,6 @@ public class TreeTest {
             avlTree.delete(i);
         }
         System.out.println("Удаление в AvlTree: "+ (System.currentTimeMillis()-start)+" ms\n");
-
-
     }
 
 }

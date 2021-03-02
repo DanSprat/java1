@@ -1,7 +1,11 @@
 package ru.progwards.java1.lessons.test;
 
 import java.io.*;
-import java.lang.reflect.Array;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.nio.file.*;
 import java.time.*;
@@ -223,8 +227,95 @@ public class Test1 {
             return CompareResult.EQUAL;
         return CompareResult.GREATER;
     }
-    public static void main(String[] args) throws IOException{
+   static class Person {
+        private String name;
 
+        public Person() {
+            name = "no name";
+        }
+
+        private Person(String name) {
+            this.name = name;
+        }
+       private void setName(String name) {
+           this.name = name;
+       }
+
+    }
+
+    static void setName(Person person, String name) throws NoSuchFieldException, IllegalAccessException {
+        try {
+            Field nm = person.getClass().getDeclaredField("name");
+            nm.setAccessible(true);
+            nm.set(person,name);
+        }
+        catch(Exception ex){
+
+        }
+    }
+    void callSetName(Person person, String name){
+        try {
+            Method method = person.getClass().getDeclaredMethod("setName", String.class);
+            method.setAccessible(true);
+            try {
+                method.invoke(person,name);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+    static Person callConstructor(String name){
+        Person person;
+        try {
+            Constructor constructor = Person.class.getDeclaredConstructor(String.class);
+            constructor.setAccessible(true);
+            person = (Person) constructor.newInstance(name);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface AnnotationTest {
+        String text() default "Всегда говори привет";
+    }
+
+
+    class Greetings {
+        void hello() {return;}
+        void goodday() {return;}
+        void goodnight() {}
+        void hi(){}
+    }
+    static void printAnnotation(){
+        String string="";
+        for (var m: Greetings.class.getDeclaredMethods()){
+
+            if (m.isAnnotationPresent(AnnotationTest.class)){
+                string= m.getName();
+                string+=(" "+m.getAnnotation(AnnotationTest.class).text());
+                System.out.println(string);
+            }
+
+        }
+    }
+    public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
+
+
+        Person person = new Person();
+        setName(person,"Федя");
         Path pathFile = Paths.get("C:\\Users\\Work\\IdeaProjects\\SimpleCalculator\\target\\SimpleCalculator-1.0-SNAPSHOT-jar-with-dependencies.jar");
         FileInputStream is = new FileInputStream(pathFile.toString());
         JarInputStream jarStream = new JarInputStream(is);
