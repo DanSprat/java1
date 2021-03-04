@@ -11,7 +11,6 @@ public class Heap {
         private Integer size;
         private Integer ptr;
 
-
         Block (int p,int sz){
             size =sz;
             ptr =p;

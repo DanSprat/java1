@@ -115,7 +115,7 @@ public class AvlTree <K extends Comparable<K>,V> {
         }
 
         /**
-         * Поиск звена по плючу
+         * Поиск звена по ключу
          * @param key Ключ
          * @return Звено с соответствующим ключом
          */
