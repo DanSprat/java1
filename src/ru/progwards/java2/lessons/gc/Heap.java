@@ -152,11 +152,11 @@ public class Heap {
             return ptr;
         }
     }*/
-    public void free(int ptr){
+    public void free(int ptr) throws InvalidPointerException {
         if (codeMap.isEmpty()) {
             Integer block = busyBlocks.remove(ptr);
             if (block == null) {
-                throw new  NullPointerException();
+                throw new InvalidPointerException("Данный указатель не является началом блока",ptr);
             } else {
                 for (int i = ptr; i < block + ptr; i++) {
                     bytes[i] = 0;
@@ -244,7 +244,7 @@ public class Heap {
         current = freeBlocks.last();
     }
 
-    public static void main(String[] args) throws OutOfMemoryException {
+    public static void main(String[] args) throws OutOfMemoryException, InvalidPointerException {
         ArrayList<Integer> integerArrayList = new ArrayList<>();
         Heap heap = new Heap(20);
         integerArrayList.add( heap.malloc(5));
