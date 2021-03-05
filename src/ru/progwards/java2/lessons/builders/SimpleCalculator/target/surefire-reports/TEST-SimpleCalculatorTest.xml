@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="24" failures="0" name="SimpleCalculatorTest" time="0.008" errors="0" skipped="0">
+  <properties>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="java.vm.version" value="11.0.4+10-b304.77"/>
+    <property name="sun.boot.library.path" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\jbr\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Work\IdeaProjects\Progwards\src\ru\progwards\java2\lessons\builders\SimpleCalculator"/>
+    <property name="java.vm.vendor" value="JetBrains s.r.o"/>
+    <property name="java.vendor.url" value="https://www.jetbrains.com/"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="sun.os.patch.level" value="Service Pack 1"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="RU"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\Work\IdeaProjects\Progwards\src\ru\progwards\java2\lessons\builders\SimpleCalculator"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="java.runtime.version" value="11.0.4+10-b304.77"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\Work\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 7"/>
+    <property name="maven.ext.class.path" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\plugins\maven\lib\maven-event-listener.jar"/>
+    <property name="classworlds.conf" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\plugins\maven\lib\maven3\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1251"/>
+    <property name="java.library.path" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\jbr\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Java\jre1.8.0_271\bin;C:\Users\Work\AppData\Local\LyX 2.3\Perl\bin;C:\Users\Work\Documents\apache-maven-3.6.3\bin\;C:\Users\Work\AppData\Local\Programs\Python\Python36-32\Scripts\;C:\Users\Work\AppData\Local\Programs\Python\Python36-32\; C:\Users\Work\Documents\apache-maven-3.6.3\bin;."/>
+    <property name="maven.conf" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\plugins\maven\lib\maven3/conf"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="java.class.version" value="55.0"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="6.1"/>
+    <property name="user.home" value="C:\Users\Work"/>
+    <property name="user.timezone" value="Europe/Moscow"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="idea.version2019.2.4" value="true"/>
+    <property name="user.name" value="Work"/>
+    <property name="java.class.path" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\plugins\maven\lib\maven3\boot\plexus-classworlds-2.6.0.jar"/>
+    <property name="java.vm.specification.version" value="11"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.java.command" value="org.codehaus.classworlds.Launcher -Didea.version2019.2.4 install"/>
+    <property name="java.home" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\jbr"/>
+    <property name="user.language" value="ru"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.version" value="11.0.4"/>
+    <property name="java.vendor" value="JetBrains s.r.o"/>
+    <property name="maven.home" value="D:\IntelliJ IDEA 2019.2.4(Ultimate)\plugins\maven\lib\maven3"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.version.date" value="2019-07-16"/>
+    <property name="java.vendor.url.bug" value="https://youtrack.jetbrains.com"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase classname="SimpleCalculatorTest$divExceptionSimpleCalculatorTest" name="testWithParams[0]" time="0.005"/>
+  <testcase classname="SimpleCalculatorTest$divExceptionSimpleCalculatorTest" name="testWithParams[1]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$divNormalSimpleCalculatorTest" name="testWithParam[Test 0 = (600) / (20) = (30)]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$divNormalSimpleCalculatorTest" name="testWithParam[Test 1 = (-5) / (2) = (-2)]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$divNormalSimpleCalculatorTest" name="testWithParam[Test 2 = (-120) / (-5) = (24)]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$divNormalSimpleCalculatorTest" name="testWithParam[Test 3 = (0) / (100) = (0)]" time="0.001"/>
+  <testcase classname="SimpleCalculatorTest$multExceptionSimpleCalculatorTest" name="testWithParams[0]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$multNormalSimpleCalculatorTest" name="testWithParam[Test 0 = (20) * (30) = (600)]" time="0.001"/>
+  <testcase classname="SimpleCalculatorTest$multNormalSimpleCalculatorTest" name="testWithParam[Test 1 = (-10) * (6) = (-60)]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$multNormalSimpleCalculatorTest" name="testWithParam[Test 2 = (-5) * (-10) = (50)]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffExceptionSimpleCalculatorTest" name="testWithParams[0]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffExceptionSimpleCalculatorTest" name="testWithParams[1]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffExceptionSimpleCalculatorTest" name="testWithParams[2]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffExceptionSimpleCalculatorTest" name="testWithParams[3]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffNormalSimpleCalculatorTest" name="testWithParams[Тест 0: (5) - (5) = 0]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffNormalSimpleCalculatorTest" name="testWithParams[Тест 1: (4) - (3) = 1]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffNormalSimpleCalculatorTest" name="testWithParams[Тест 2: (-3) - (2) = -5]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$diffNormalSimpleCalculatorTest" name="testWithParams[Тест 3: (1) - (-6) = 7]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$sumExceptionSimpleCalculatorTest" name="testWithParams[0]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$sumNormalSimpleCalculatorTest" name="testWithParams[Тест 0: (0) + (0) = 0]" time="0.001"/>
+  <testcase classname="SimpleCalculatorTest$sumNormalSimpleCalculatorTest" name="testWithParams[Тест 1: (1) + (9) = 10]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$sumNormalSimpleCalculatorTest" name="testWithParams[Тест 2: (0) + (-3) = -3]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$sumNormalSimpleCalculatorTest" name="testWithParams[Тест 3: (-5) + (0) = -5]" time="0"/>
+  <testcase classname="SimpleCalculatorTest$sumNormalSimpleCalculatorTest" name="testWithParams[Тест 4: (-1) + (4) = 3]" time="0"/>
+</testsuite>
