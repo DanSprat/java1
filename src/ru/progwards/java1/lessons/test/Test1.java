@@ -1,5 +1,6 @@
 package ru.progwards.java1.lessons.test;
 
+import javax.swing.*;
 import java.io.*;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.file.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -313,14 +315,6 @@ public class Test1 {
     }
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
 
-
-        Person person = new Person();
-        setName(person,"Федя");
-        Path pathFile = Paths.get("C:\\Users\\Work\\IdeaProjects\\SimpleCalculator\\target\\SimpleCalculator-1.0-SNAPSHOT-jar-with-dependencies.jar");
-        FileInputStream is = new FileInputStream(pathFile.toString());
-        JarInputStream jarStream = new JarInputStream(is);
-        Manifest mf = jarStream.getManifest();
-        Attributes attributes = mf.getMainAttributes();
 
 
 

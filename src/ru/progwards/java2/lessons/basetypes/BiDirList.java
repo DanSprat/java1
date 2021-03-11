@@ -157,5 +157,6 @@ public class BiDirList<T> implements Iterable<T>{
         biDirList.remove(2);
         System.out.println(biDirList.at(0));
         Iterator<Integer> it = biDirList.iterator();
+        System.out.println("Hello World");
     }
 }
