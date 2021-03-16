@@ -315,7 +315,20 @@ public class Test1 {
     }
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
 
+        int a1= 100;
+        int a2 = 4;
+        double check =100000000;
+        double minB = 0;
+        ArrayList<Double> list = new ArrayList<>();
+        for (double b =0.01;b<=100;b+=0.01){
+            double val=Math.sqrt(Math.pow(b*b*b,2)+Math.pow(2*b*b-a1,2)+Math.pow(b-a2,2));
+            if (val<check){
+                check =val;
+                minB =b;
+            }
 
+        }
+        System.out.println(minB);
 
 
         System.out.println(task1(-351.0/95,4.0/95,559.0/665));
@@ -353,10 +366,10 @@ public class Test1 {
         System.out.println(setStars("s"));
         System.out.println(invertWords("Буря мглою небо кроет"));
         System.out.println("Сделаю коммит, запушу в репо: робот, проверяй теперь всё это...");
-        int[] a1 = {12, 5, 0, 58, 36};
-        int[] a2 = Arrays.copyOf(a1, a1.length);
-        Arrays.sort(a2);
-        System.out.println(Arrays.equals(a1, a2));
+        //int[] a1 = {12, 5, 0, 58, 36};
+       //int[] a2 = Arrays.copyOf(a1, a1.length);
+       // Arrays.sort(a2);
+        //System.out.println(Arrays.equals(a1, a2));
         System.out.println(ret((byte)15));
         //BigDecimal a = new BigDecimal("10.0");
         BigDecimal b = new BigDecimal("10.0");

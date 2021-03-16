@@ -1,14 +1,63 @@
-package ru.progwards.java1.lessons.datetime;
+package ru.progwards.java2.lessons.classloader;
+import ru.progwards.java1.lessons.datetime.CloseException;
+import ru.progwards.java1.lessons.datetime.OpenException;
+import ru.progwards.java1.lessons.datetime.ProfilerExeption;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.instrument.Instrumentation;
+import java.nio.file.*;
 import java.time.Instant;
 import java.util.*;
+import java.util.List;
 
-public class Profiler {
+
+public class SystemProfiler {
+
+
+    public static class StatisticInfo {
+        public String sectionName;
+        public long fullTime;
+        public long selfTime;
+        public int count;
+
+        public StatisticInfo(String sectionName, long fullTime, long selfTime) {
+            this.sectionName = sectionName;
+            this.fullTime = fullTime;
+            this.selfTime = selfTime;
+            this.count=1;
+        }
+    }
+
 
     private static ArrayList<StatisticInfo> infos = new ArrayList<>();
     private static ArrayDeque<Section> Stack = new ArrayDeque<>();
     private static HashMap<String,Section> onStack = new HashMap<>();
 
+    private static class Section{
+        public long start;
+        public String name;
+        public Section parent;
+        public Section child;
+        public int allChildTime;
+
+        public Section(String name){
+            start = Instant.now().toEpochMilli();
+            this.name = name;
+            parent =null;
+            allChildTime = 0;
+            child=null;
+        }
+
+        public Section(String name,Section parent){
+            start = Instant.now().toEpochMilli();
+            this.name = name;
+            this.parent = parent;
+            allChildTime = 0;
+            child=null;
+        }
+    }
     public static void enterSection(String name) {
         if(onStack.containsKey(name)){
             try {
@@ -68,32 +117,21 @@ public class Profiler {
     public static List<StatisticInfo> getStatisticInfo(){
         return infos;
     }
-
-    private static class Section{
-        public long start;
-        public String name;
-        public Section parent;
-        public Section child;
-        public int allChildTime;
-
-        public Section(String name){
-            start = Instant.now().toEpochMilli();
-            this.name = name;
-            parent =null;
-            allChildTime = 0;
-            child=null;
+    public static void printStatisticInfo(String fileName) throws IOException {
+        Path path = Paths.get("").resolve("src/ru/progwards/java2/lessons/classloader/"+fileName).toAbsolutePath();
+        if (!Files.exists(path)){
+            Files.createFile(path);
         }
-
-        public Section(String name,Section parent){
-            start = Instant.now().toEpochMilli();
-            this.name = name;
-            this.parent = parent;
-            allChildTime = 0;
-            child=null;
+        System.out.println("Буду писать сюда: "+path.toAbsolutePath());
+        for(var info:infos){
+            Formatter formatter = new Formatter();
+            formatter.format("%40s\t%7d\t%7d\t%7d\n",info.sectionName,info.fullTime,info.selfTime,info.count);
+            String str =formatter.toString();
+            Files.writeString(path,str,StandardOpenOption.APPEND);
         }
     }
 
-    public static void main(String[] args)  {
-
+    public static void premain(String agentArgument, Instrumentation instrumentation){
+        instrumentation.addTransformer(new ClassTransformer(agentArgument));
     }
 }
