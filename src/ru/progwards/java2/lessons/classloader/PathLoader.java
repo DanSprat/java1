@@ -40,7 +40,85 @@ public class PathLoader extends ClassLoader {
     final static String LOG ="patchloader.log";
     private static PathLoader loader = new PathLoader(ROOT);
 
+    private static long getDate(String className,Path file){
+        String str = className.replace(".","\\");
+        String path = file.toAbsolutePath().toString();
+        path = path.replace(str+DOT,"");
+        Path pathWithoutClass = Paths.get(path);
+        Path pathWithoutDate = pathWithoutClass.getParent();
+        Path relPath = pathWithoutDate.relativize(pathWithoutClass);
+        long date =Long.parseLong(relPath.toString().replaceAll("[\\/\\\\]",""));
+        return date;
+    }
+
     private static void process(Path logFile,HashMap<String,Long> cls, HashMap<String,String> fld) throws IOException {
+        Files.walkFileTree(Paths.get(ROOT),new SimpleFileVisitor<Path>(){
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                HashMap<String,ClassInfo> checkedClasses = new HashMap<>();
+                if (file.toString().endsWith(DOT)){
+                    String className = makeClassName(file);
+                    if (checkedClasses.get(className) == null){
+                        long date = getDate(className,file);
+                        checkedClasses.put(className,new ClassInfo(date,file.toAbsolutePath().toString(),makeSubClassPath(file)));
+                        Files.walkFileTree(Paths.get(ROOT),new SimpleFileVisitor<>(){
+                            @Override
+                            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                                if (file.toString().replaceAll("[\\/\\\\]",".").endsWith(className+DOT)){
+                                    long date = getDate(className,file);
+                                    if (checkedClasses.get(className).millis<date){
+                                        checkedClasses.put(className,new ClassInfo(date,file.toAbsolutePath().toString(),makeSubClassPath(file)));
+                                    }
+                                }
+
+                                return FileVisitResult.CONTINUE;
+                            }
+
+                            @Override
+                            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                                return FileVisitResult.CONTINUE;
+                            }
+                        });
+                        ClassInfo classInfo = checkedClasses.get(className);
+                        Long time = cls.get(className);
+                        if (time==null || cls.get(className)<checkedClasses.get(className).millis){
+                            if (time != null){
+                                loader = new PathLoader(classInfo.path.replace(classInfo.name,""));
+                            }
+                            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.YYYY HH:mm");
+                            ZonedDateTime ZDT = ZonedDateTime.now();
+                            try {
+                                loader.setBasePath(classInfo.path.replace(classInfo.name,""));
+                                loader.loadClass(className,true);
+                                String string = dateTimeFormatter.format(ZDT) + " "+className+ " загружен из " + loader.basePath+"\n\n";
+                                Files.writeString(logFile,string,StandardOpenOption.APPEND);
+                                System.out.println(string);
+                                cls.put(className,classInfo.millis);
+                                if (fld.get(className)!=null){
+                                    fld.remove(className);
+                                }
+                            } catch (ClassNotFoundException | ClassFormatError ex){
+                                if (fld.get(className)==null || !fld.get(className).equals(classInfo.path)){
+                                    fld.put(className,classInfo.path);
+                                    String failedClass = dateTimeFormatter.format(ZDT) + " "+className+ " ошибка загрузки "+ ex.toString()+"\n\n";
+                                    Files.writeString(logFile,failedClass,StandardOpenOption.APPEND);
+                                }
+                            }
+                        }
+                    }
+                }
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    @Deprecated
+    private static void processDep(Path logFile,HashMap<String,Long> cls, HashMap<String,String> fld) throws IOException {
         Files.walkFileTree(Paths.get(ROOT),new SimpleFileVisitor<Path>(){
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

@@ -1,7 +1,6 @@
 package ru.progwards.java2.lessons.classloader;
 
-//Класс для запуска
-// VM options: Путь до jar=ru.progwards.java2.lessons.classloader.TestClass
+
 public class TestClass {
     public static void main(String[] args) throws InterruptedException {
         first();
