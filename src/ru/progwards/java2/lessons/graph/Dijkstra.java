@@ -1,7 +1,6 @@
 package ru.progwards.java2.lessons.graph;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class Dijkstra {
@@ -97,6 +96,7 @@ public class Dijkstra {
             notes.remove(v);
         }
         for (int i =0;i<size;i++){
+            nodes[i].path.add(nodes[i].number);
             paths[i] = nodes[i].path.path;
         }
         return paths;
