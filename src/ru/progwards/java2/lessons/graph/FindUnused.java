@@ -1,7 +1,11 @@
 package ru.progwards.java2.lessons.graph;
 
+import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 public class FindUnused {
 
@@ -30,7 +34,9 @@ public class FindUnused {
         return unusedObjects;
     }
 
+
     public static void main(String[] args) {
+
         CObject root1 = new CObject("Root 1");
         CObject root2 = new CObject("Root 2");
         ArrayList <CObject> roots = new ArrayList<>();
@@ -59,5 +65,10 @@ public class FindUnused {
         for(CObject object: unusedObjects){
             System.out.print(object.info+" ");
         }
+
+        URL iconURL = ClassLoader.getSystemResource("Graph.png");
+        Icon icon = new ImageIcon(iconURL);
+        JOptionPane.showMessageDialog(null,null,null,JOptionPane.INFORMATION_MESSAGE,icon);
+
     }
 }
