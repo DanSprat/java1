@@ -77,8 +77,8 @@ public class Dijkstra {
             nodes[i] = addNode;
         }
 
-        addNode = new Node(n+1,0);
-        nodes[n] = addNode;
+        addNode = new Node(n,0);
+        nodes[n-1] = addNode;
         notes.add(addNode);
         while(!notes.isEmpty()){
             Node v = notes.peek();
@@ -111,6 +111,7 @@ public class Dijkstra {
         }
     }
     public static void main(String[] args) {
+        // Вершины нумеруются начиная с 1
         int nodes [][] = {{0,7,9,0,0,14},
                           {7,0,10,15,0,0},
                           {9,10,0,11,0,2},
@@ -120,7 +121,11 @@ public class Dijkstra {
         printArr(nodes);
         System.out.println("==============================");
         Dijkstra DJ = new Dijkstra(nodes);
-        int paths[][] = DJ.find(0);
+        int paths[][] = DJ.find(1);
         printArr(paths);
+        paths = DJ.find(2);
+        System.out.println("==============================");
+        printArr(paths);
+
     }
 }

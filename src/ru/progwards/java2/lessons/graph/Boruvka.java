@@ -81,8 +81,7 @@ public class Boruvka {
 
     public static void main(String[] args) {
         Graph<String, String> graph = new Graph<>();
-        ArrayList<Node<String,String>> nodes = new ArrayList<>();
-        ArrayList<Node<String,String>> edges = new ArrayList<>();
+
         Node<String, String> A = new Node<>("A");
         A.in = A.out;
         Node<String, String> B = new Node<>("B");
