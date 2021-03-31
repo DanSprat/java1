@@ -127,5 +127,9 @@ public class Dijkstra {
         System.out.println("==============================");
         printArr(paths);
 
+        paths = DJ.find(6);
+        System.out.println("==============================");
+        printArr(paths);
+
     }
 }
