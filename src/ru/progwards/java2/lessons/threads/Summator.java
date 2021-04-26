@@ -64,7 +64,7 @@ public class Summator {
     }
 
     public static void main(String[] args) {
-        Summator summator =new Summator(4);
-        System.out.println(summator.sum(new BigInteger("1000000")));
+        Summator summator =new Summator(3);
+        System.out.println(summator.sum(new BigInteger("256")));
     }
 }
