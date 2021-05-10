@@ -1,7 +1,5 @@
 package ru.progwards.java2.lessons.synchro;
 
-import ru.progwards.java2.lessons.classloader.SystemProfiler;
-
 import java.util.concurrent.CountDownLatch;
 
 public class Philosopher extends Thread {

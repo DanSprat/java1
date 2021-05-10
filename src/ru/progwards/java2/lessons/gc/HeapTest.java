@@ -79,5 +79,6 @@ public class HeapTest {
         long stop = System.currentTimeMillis();
         System.out.println("malloc time: "+allocTime+" free time: "+freeTime);
         System.out.println("total time: "+(stop-start)+" count: "+count);
+        System.out.println(allocated);
     }
 }

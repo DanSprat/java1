@@ -1,13 +1,19 @@
-package ru.progwards.java2.lessons.gc;
+package ru.progwards.java2.lessons.synchro;
 
+import ru.progwards.java2.lessons.gc.InvalidPointerException;
+import ru.progwards.java2.lessons.gc.OutOfMemoryException;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 public class Heap {
 
-    private static class Block implements Comparable<Block>{
+    private class Block implements Comparable<Block> {
         private Integer size;
         private Integer ptr;
 
@@ -36,8 +42,6 @@ public class Heap {
         public int hashCode() {
             return Objects.hash(size, ptr);
         }
-
-
         @Override
         public int compareTo(Block block) {
             int val = this.size.compareTo(block.size);
@@ -46,113 +50,29 @@ public class Heap {
             }
             return val;
         }
-    }
 
-    TreeSet <Block> freeBlocks;
-    HashMap<Integer,Integer> busyBlocks;
-    HashMap <Integer,Integer> codeMap;
+    }
+    ReadWriteLock processWithMemory;
+    ReentrantLock searchMemory;
+    ConcurrentSkipListSet<Block> freeBlocks;
+    ConcurrentHashMap<Integer,Integer> busyBlocks;
+    ConcurrentHashMap <Integer,Integer> codeMap;
     private byte [] bytes;
     Block current;
 
 
-    Heap(int maxHeapSize){
-        bytes = new byte [maxHeapSize];
-        busyBlocks = new HashMap<>();
-        freeBlocks = new TreeSet<>();
-        codeMap = new HashMap<>();
-        freeBlocks.add(new Block(0,maxHeapSize));
+    public Heap(int size,ReentrantLock reentrantLock,ReadWriteLock readWriteLock){
+        bytes = new byte [size];
+        busyBlocks = new ConcurrentHashMap<>();
+        freeBlocks = new ConcurrentSkipListSet<>();
+        codeMap = new ConcurrentHashMap<>();
+        freeBlocks.add(new Block(0,size));
         current = freeBlocks.last();
-
+        this.searchMemory = reentrantLock;
+        this.processWithMemory = readWriteLock;
     }
-    public boolean check(int size){
-        if (current.size >= size){
-            return true;
-        }
-        return false;
-    }
-    public void findMemory(int size){
-        if (current == null){
-            return;
-        }
-       if (check(size)){
-           return;
-       }
-       current = freeBlocks.last();
-       if (check(size)){
-          // current = block;
-           return;
-       }
-       System.out.println("Дефрагментация start");
-       defrag();
-        System.out.println("Дефрагментация end");
-       current = freeBlocks.last();
-       if (check(size)){
-            //current=block;
-            return;
-       }
-       System.out.println("Компактизация start");
-       compact();
-        System.out.println("Компактизация end");
-       current = freeBlocks.last();
-        if (check(size)){
-            //current = block;
-            return;
-        }
-        current = null;
-    }
-    public int malloc(int size) throws OutOfMemoryException {
-        findMemory(size);
-        if (current==null){
-            throw new OutOfMemoryException("Out");
-        } else {
-            int ptr = current.ptr;
-            if (codeMap.isEmpty()){
-                busyBlocks.put(current.ptr,size);
-            } else {
-                Integer ret = ThreadLocalRandom.current().nextInt();
-                while (codeMap.get(ret)!=null){
-                    ret = ThreadLocalRandom.current().nextInt();
-                }
-                busyBlocks.put(ret,size);
-                codeMap.put(ret,current.ptr);
-                ptr = ret;
-            }
-
-            for (int i =current.ptr;i<current.ptr+size;i++){
-                bytes[i]=1;
-            }
-            if (current.size.equals(size)){
-                freeBlocks.remove(current);
-                if (!freeBlocks.isEmpty()){
-                    current = freeBlocks.last();
-                } current = null;
-            } else {
-                current.size-=size;
-                current.ptr+=size;
-            }
-            return ptr;
-        }
-    }
-    /*public int malloc(int size){
-        Block block = freeBlocks.ceiling(new Block(-1,size));
-        if (block == null){
-            throw new NullPointerException();
-        } else {
-            int ptr = block.ptr+size;
-            busyBlocks.put(block.ptr,size);
-            for (int i =block.ptr;i<block.ptr+size;i++){
-                bytes[i]=1;
-            }
-            if (block.size.equals(size)){
-                freeBlocks.remove(block);
-            } else {
-                block.size-=size;
-                block.ptr+=size;
-            }
-            return ptr;
-        }
-    }*/
     public void free(int ptr) throws InvalidPointerException {
+        processWithMemory.readLock().lock();
         if (codeMap.isEmpty()) {
             Integer block = busyBlocks.remove(ptr);
             if (block == null) {
@@ -177,9 +97,94 @@ public class Heap {
                 codeMap.remove(ptr);
             }
         }
+        processWithMemory.readLock().unlock();
     }
+
+    public boolean check(int size){
+        if (current.size >= size){
+            return true;
+        }
+        return false;
+    }
+    public void findMemory(int size){
+        if (current == null){
+            return;
+        }
+        if (check(size)){
+            return;
+        }
+
+        System.out.println("Не хватило памяти,начинаю работать");
+        processWithMemory.writeLock().lock();
+        current = freeBlocks.last();
+        if (check(size)){
+            processWithMemory.writeLock().unlock();
+            return;
+        }
+
+        System.out.println("Дефрагментация start");
+        defrag();
+        System.out.println("Дефрагментация end");
+        current = freeBlocks.last();
+        if (check(size)){
+            processWithMemory.writeLock().unlock();
+            return;
+        }
+        System.out.println("Компактизация start");
+        compact();
+        System.out.println("Компактизация end");
+        current = freeBlocks.last();
+        if (check(size)){
+            processWithMemory.writeLock().unlock();
+            return;
+        }
+        current = null;
+        processWithMemory.writeLock().unlock();
+    }
+    public int malloc(int size) throws OutOfMemoryException {
+        searchMemory.lock();
+        findMemory(size);
+        if (current==null){
+            searchMemory.unlock();
+            throw new OutOfMemoryException("Out");
+        } else {
+            int ptr = current.ptr;
+            if (codeMap.isEmpty()){
+                busyBlocks.put(current.ptr,size);
+            } else {
+                Integer ret = ThreadLocalRandom.current().nextInt();
+                while (codeMap.get(ret)!=null){
+                    ret = ThreadLocalRandom.current().nextInt();
+                }
+                busyBlocks.put(ret,size);
+                codeMap.put(ret,current.ptr);
+                ptr = ret;
+            }
+            int fillPtr = current.ptr;;
+            if (current.size.equals(size)){
+
+                freeBlocks.remove(current);
+                if (!freeBlocks.isEmpty()){
+                    current = freeBlocks.last();
+                } current = null;
+            } else {
+                current.size-=size;
+                current.ptr+=size;
+            }
+
+            searchMemory.unlock(); //
+
+            processWithMemory.readLock().lock();
+            for (int i =fillPtr;i<fillPtr+size;i++){
+                bytes[i]=1;
+            }
+            processWithMemory.readLock().unlock();
+            return ptr;
+        }
+    }
+
     public void defrag(){
-        ArrayList <Block> list =(ArrayList<Block>) freeBlocks.stream().sorted(Comparator.comparing(x->x.ptr)).collect(Collectors.toList());
+        ArrayList<Block> list =(ArrayList<Block>) freeBlocks.stream().sorted(Comparator.comparing(x->x.ptr)).collect(Collectors.toList());
         Block first;
         Block next;
         for (int i =0;i<list.size()-1;++i){
@@ -200,8 +205,10 @@ public class Heap {
             freeBlocks.remove(first);
 
         }
+        System.out.println("конец Дефрагментции");
     }
     public void compact() {
+        System.out.println("начало Компактизации");
         if (codeMap.isEmpty()) {
             int index = 0;
             int ptr;
@@ -209,7 +216,6 @@ public class Heap {
             for (var it : busyBlocks.entrySet().stream().sorted(Comparator.comparing(x -> x.getKey())).collect(Collectors.toList())) {
                 if (index != it.getKey()) {
                     ptr = it.getKey();
-                    //codeMap.put(ptr, index);
                     for (int i = 0; i < it.getValue(); ++i, ++index) {
                         bytes[ptr + i] = 0;
                         bytes[index] = 1;
@@ -240,24 +246,7 @@ public class Heap {
             freeBlocks.add(new Block(index, bytes.length - index));
         }
         current = freeBlocks.last();
+        System.out.println("конец Компактизации");
     }
 
-    public static void main(String[] args) throws OutOfMemoryException, InvalidPointerException {
-        ArrayList<Integer> integerArrayList = new ArrayList<>();
-        Heap heap = new Heap(20);
-        integerArrayList.add( heap.malloc(5));
-        integerArrayList.add(heap.malloc(10)) ;
-        integerArrayList.add(heap.malloc(2));
-        integerArrayList.add(heap.malloc(1));
-        integerArrayList.add( heap.malloc(2));
-        heap.free(5);
-        heap.compact();
-        integerArrayList.add(heap.malloc(5));
-        integerArrayList.add(heap.malloc(5));
-        System.out.println(integerArrayList);
-        heap.free(integerArrayList.get(5));
-        heap.compact();
-        heap.malloc(5);
-
-    }
 }
