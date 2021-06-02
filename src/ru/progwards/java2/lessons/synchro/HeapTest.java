@@ -1,6 +1,7 @@
 package ru.progwards.java2.lessons.synchro;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -50,8 +51,6 @@ public class HeapTest {
         System.out.println("malloc time: "+thread1.allocTime+" free time: "+thread1.freeTime);
         System.out.println("total time: "+(stop-start)+" count: "+thread1.count);
         System.out.println("Allocated: "+ thread1.allocated);
-
-
 
     }
 

@@ -295,7 +295,8 @@ public class Test1 {
     }
 
 
-    class Greetings {
+
+        class Greetings {
         void hello() {return;}
         void goodday() {return;}
         void goodnight() {}
@@ -313,8 +314,8 @@ public class Test1 {
 
         }
     }
-    public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
-
+    public static void main(String[] args) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder("");
         int a1= 100;
         int a2 = 4;
         double check =100000000;
