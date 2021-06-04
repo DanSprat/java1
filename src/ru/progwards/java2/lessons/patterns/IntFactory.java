@@ -5,8 +5,8 @@ public enum IntFactory implements IntegerFactory {
     int num;
 
     @Override
-    public AbsInteger getNumber(int x) {
-        return new IntInteger(x);
+    public AbsInteger getNumber() {
+        return new IntInteger(num);
     }
 
     @Override

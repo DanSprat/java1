@@ -6,8 +6,8 @@ public enum ShortFactory implements IntegerFactory {
 
 
     @Override
-    public AbsInteger getNumber(int x) {
-        return new ShortInteger((short) x);
+    public AbsInteger getNumber() {
+        return new ShortInteger(num);
     }
 
     @Override

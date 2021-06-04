@@ -4,10 +4,9 @@ public enum ByteFactory implements IntegerFactory {
     BYTE_FACTORY;
     byte num;
 
-
     @Override
-    public AbsInteger getNumber(int x) {
-        return new ByteInteger((byte) x);
+    public AbsInteger getNumber() {
+        return new ByteInteger(num);
     }
 
     @Override
