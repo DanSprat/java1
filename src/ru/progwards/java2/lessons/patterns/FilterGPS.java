@@ -1,8 +1,6 @@
 package ru.progwards.java2.lessons.patterns;
 
-import javassist.compiler.ast.Pair;
-import ru.progwards.java2.lessons.basetypes.DoubleHashTable;
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FilterGPS {
@@ -11,8 +9,13 @@ public class FilterGPS {
     private double dispersion; // Дисперсия
     private double sigma; // Сигма
     private double expectation; // Математическое ожидание
-
     private final static double earthRadius = 6371.0;
+    private ArrayList<Double> speeds = new ArrayList<>(); // Массив узмееренных скоростей
+
+
+    public Double getLastSpeed(){
+        return speeds.get(speeds.size()-1);
+    }
 
     private void addToGps(double currentSpeed){
         expectation = ((count -1) / (double)count) * expectation + currentSpeed/count;
@@ -27,6 +30,7 @@ public class FilterGPS {
         double d =  Math.acos(Math.sin(radLatA)*Math.sin(radLatB) + Math.cos(radLatA)*Math.cos(radLatB)*Math.cos(radLonB - radLonA));
         double L = d * earthRadius;
         double currentSpeed = L / (newGPS.time - gps.time);
+        speeds.add(currentSpeed);
         return currentSpeed;
     }
     public boolean addPoint(GPS newGPS){
@@ -65,6 +69,7 @@ public class FilterGPS {
         System.out.println("3 sigma: "+ filterGPS.sigma*3);
         GPS gps = new GPS(20,20,60);
         filterGPS.addPoint(gps);
+        System.out.println(filterGPS.getLastSpeed()); // Эта скорость должна быть больше чем МО + 3 сигма
         gps = new GPS(30,30,70);
         filterGPS.addPoint(gps);
 
