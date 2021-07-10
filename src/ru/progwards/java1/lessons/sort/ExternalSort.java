@@ -3,18 +3,18 @@ package ru.progwards.java1.lessons.sort;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 public class ExternalSort {
 
     private static class Block{
         BufferedReader bufferedReader;
         Integer [] intBlock;
+        int blockSize;
         int index=0;
         boolean endReading;
         boolean endWriting;
+        int topElement;
 
         public Block(BufferedReader bufferedReader,Integer [] intBlock){
             this.bufferedReader= bufferedReader;
@@ -237,19 +237,44 @@ public class ExternalSort {
             // Многопутевое слияние
             int count = countOfFiles - startIndex + 1;
             int blockSize = MEMORY_SIZE / (countOfFiles - startIndex + 2);
-            HashSet<Block> set = new HashSet<>();
+
+            ArrayList<Block> blocks = new ArrayList<>();
             for(int i = startIndex;i<=countOfFiles;i++){
                 BufferedReader bufferedReaderNew = new BufferedReader(new FileReader(new File(i+"data.txt")));
-                set.add(new Block(bufferedReaderNew,new Integer [blockSize]));
+                Block newBlock = new Block(bufferedReaderNew,new Integer [blockSize]);
+                blocks.add(newBlock);
+                String nextInt = bufferedReaderNew.readLine();
+                int currentSize = 0;
+                while (nextInt!=null){
+                    newBlock.intBlock[currentSize++] = Integer.parseInt(nextInt);
+                    nextInt = bufferedReaderNew.readLine();
+                }
+                newBlock.blockSize = currentSize;
             }
+            blocks.sort(Comparator.comparing(x->x.topElement));
+            File outputFile = new File(outFileName);
+            PrintWriter outputPrintWriter = new PrintWriter(outputFile);
+            int [] outputBlock = new int[blockSize];
+            int realSize = 0;
+            while (blocks.size() > 0){
+                for (int i =0;i<blockSize;i++){
+                    if (blocks.size()>0){
+                        outputBlock[realSize++] = blocks.get(0).topElement;
+                        // Бинарный поиск
+                    } else break;
+                }
+                for (int i=0;i<realSize;i++){
+                    outputPrintWriter.println(outputBlock[i]);
+                }
+            }
+
             
         }
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader1 = new BufferedReader(new FileReader(new File(2+"data.txt")));
-        BufferedReader bufferedReader2 = new BufferedReader(new FileReader(new File(1+"data.txt")));
+        BufferedReader bufferedReader1 = new BufferedReader(new FileReader((2+"data.txt")));
+        BufferedReader bufferedReader2 = new BufferedReader(new FileReader((1+"data.txt")));
         mergeTwo(bufferedReader1,bufferedReader2,"3data.txt");
-
     }
 }
