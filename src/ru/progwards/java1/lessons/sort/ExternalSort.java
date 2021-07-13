@@ -1,6 +1,7 @@
 package ru.progwards.java1.lessons.sort;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -8,15 +9,16 @@ import java.util.*;
 public class ExternalSort {
 
     private static class Block{
+        String path;
         BufferedReader bufferedReader;
         Integer [] intBlock;
         int blockSize;
         int index=0;
         boolean endReading;
-        boolean endWriting;
         int topElement;
 
-        public Block(BufferedReader bufferedReader,Integer [] intBlock){
+        public Block(BufferedReader bufferedReader,Integer [] intBlock,String path){
+            this.path = path;
             this.bufferedReader= bufferedReader;
             this.intBlock = intBlock;
         }
@@ -39,17 +41,21 @@ public class ExternalSort {
         }
     }
 
-    private static int MEMORY_SIZE = 10;
+    private static int MEMORY_SIZE = 10_000;
 
 
     private static void writeToFile(String fileName,int sizeOfBlock,Integer [] toWriteBlock,PrintWriter printWriter) throws FileNotFoundException {
         for (int i = 0;i<sizeOfBlock;i++){
             printWriter.println(toWriteBlock[i]);
         }
+
     }
-    private static void mergeTwo(BufferedReader bufferedReader1,BufferedReader bufferedReader2, String fileName) throws IOException {
+
+    private static void mergeTwo(File file1,File file2, String fileName) throws IOException {
+        BufferedReader bufferedReader1 = new BufferedReader(new FileReader(file1));
+        BufferedReader bufferedReader2 = new BufferedReader(new FileReader(file2));
         int sizeOfBlock = MEMORY_SIZE / 3;
-        PrintWriter printWriter = new PrintWriter(new FileOutputStream(new File(fileName)));
+        PrintWriter printWriter = new PrintWriter(new FileOutputStream(("temp"+fileName)));
         Integer [] toWriteBlock = new Integer[sizeOfBlock];
         Integer [] block1 = new Integer[sizeOfBlock];
         Integer [] block2 = new Integer[sizeOfBlock];
@@ -96,12 +102,14 @@ public class ExternalSort {
            if(block1[posBlock1].compareTo(block2[posBlock2]) < 0){
                toWriteBlock[currentPosResult++] = block1[posBlock1++];
                if (posBlock1 == sizeBlock1){
+                   posBlock1 = 0;
                    if (endOfFile1){
                        posLast = posBlock2;
                        endOfLastFile = endOfFile2;
                        sizeLastBlock = sizeBlock2;
                        lastBR = bufferedReader2;
                        lastBlock = block2;
+                       bufferedReader1.close();
                        oneFromFilesWritten = true;
                        break;
                    }
@@ -115,18 +123,29 @@ public class ExternalSort {
                           sizeBlock1 = i;
                           break;
                       }
-                  }
+                  } if (sizeBlock1 == 0){
+                       posLast = posBlock2;
+                       endOfLastFile = endOfFile2;
+                       sizeLastBlock = sizeBlock2;
+                       lastBR = bufferedReader2;
+                       lastBlock = block2;
+                       bufferedReader1.close();
+                       break;
+                   }
+
                }
 
            } else {
                toWriteBlock[currentPosResult++] = block2[posBlock2++];
                if (posBlock2 == sizeBlock2){
+                   posBlock2 =0;
                    if (endOfFile2){
                        posLast = posBlock1;
                        endOfLastFile = endOfFile1;
                        sizeLastBlock = sizeBlock1;
                        lastBR = bufferedReader1;
                        lastBlock = block1;
+                       bufferedReader2.close();
                        oneFromFilesWritten = true;
                        break;
                    }
@@ -141,10 +160,20 @@ public class ExternalSort {
                            break;
                        }
                    }
+                   if (sizeBlock2 == 0){
+                       posLast = posBlock1;
+                       endOfLastFile = endOfFile1;
+                       sizeLastBlock = sizeBlock1;
+                       lastBR = bufferedReader1;
+                       lastBlock = block1;
+                       bufferedReader2.close();
+                       break;
+                   }
+
                }
            }
            if (currentPosResult == sizeOfBlock){
-                writeToFile(fileName,sizeOfBlock,toWriteBlock,printWriter);
+                writeToFile("temp"+fileName,sizeOfBlock,toWriteBlock,printWriter);
                 currentPosResult = 0;
            }
         }
@@ -172,7 +201,117 @@ public class ExternalSort {
             if (endOfLastFile)
                 write =false;
         }
+        bufferedReader1.close();
+        bufferedReader2.close();
         printWriter.close();
+        Files.delete(file1.toPath());
+        Files.delete(file2.toPath());
+        Files.move(Paths.get("temp"+fileName),Paths.get(fileName));
+
+    }
+
+    private static int binarySearch(ArrayList <Block> blocks,int element, int start, int end){
+        if(end - start <=1)
+            return element<=blocks.get(start).topElement?start:start+1;
+        int middle = (start + end)/2;
+        if (element < blocks.get(middle).topElement){
+            return binarySearch(blocks,element,start,middle);
+        } else {
+            return binarySearch(blocks,element,middle,end);
+        }
+
+    }
+    
+    private static void refresh(ArrayList<Block> blocks) throws IOException {
+        Block currentBlock = blocks.get(0);
+        if(currentBlock.index + 1 == currentBlock.blockSize){
+            if (currentBlock.endReading){
+                currentBlock.bufferedReader.close();
+                Files.delete(Paths.get(currentBlock.path));
+                blocks.remove(0);
+            } else {
+                currentBlock.index = 0;
+                currentBlock.blockSize = 0;
+                String nextInt;
+                for (int i =0;i<currentBlock.intBlock.length ;i++){
+                    nextInt = currentBlock.bufferedReader.readLine();
+                    if (nextInt == null){
+                        currentBlock.endReading = true;
+                        break;
+                    } else {
+                        currentBlock.intBlock[currentBlock.blockSize++] = Integer.parseInt(nextInt);
+                    }
+                }
+                if (currentBlock.blockSize > 0) {
+                    currentBlock.topElement = currentBlock.intBlock[0];
+                    shift(blocks);
+                } else {
+                    blocks.remove(currentBlock);
+                    currentBlock.bufferedReader.close();
+                    Files.delete(Paths.get(currentBlock.path));
+                }
+            }
+        } else {
+            currentBlock.topElement = currentBlock.intBlock[++currentBlock.index];
+            shift(blocks);
+        }
+    }
+    private static void shift(ArrayList<Block> blocks){
+        Block block = blocks.get(0);
+        blocks.remove(0);
+        int newIndex = binarySearch(blocks,block.topElement,0,blocks.size());
+        blocks.add(newIndex,block);
+    }
+
+    private static void MultiPathMerge(int startIndex,int countOfFiles,String outFileName) throws IOException {
+        int count = countOfFiles - startIndex + 1;
+        int blockSize = MEMORY_SIZE / (countOfFiles - startIndex + 2);
+        String path;
+        ArrayList<Block> blocks = new ArrayList<>();
+        for(int i = startIndex;i<=countOfFiles;i++){
+            path = i+"data.txt";
+            BufferedReader bufferedReaderNew = new BufferedReader(new FileReader(path));
+            Block newBlock = new Block(bufferedReaderNew,new Integer [blockSize],path);
+            blocks.add(newBlock);
+
+            String nextInt;
+            int currentSize = 0;
+            for (int j = 0;j<blockSize;j++){
+                nextInt = bufferedReaderNew.readLine();
+                if (nextInt == null){
+                    newBlock.endReading =true;
+                    break;
+                } else {
+                    newBlock.intBlock[currentSize++] = Integer.parseInt(nextInt);
+                }
+            }
+            newBlock.index = 0;
+            newBlock.blockSize = currentSize;
+
+            if (newBlock.blockSize>0){
+                newBlock.topElement = newBlock.intBlock[0];
+            } else {
+                blocks.remove(newBlock);
+            }
+        }
+        blocks.sort(Comparator.comparing(x->x.topElement));
+        File outputFile = new File(outFileName);
+        PrintWriter outputPrintWriter = new PrintWriter(outputFile);
+        int [] outputBlock = new int[blockSize];
+        int realSize = 0;
+        while (blocks.size() > 0) {
+            for (int i =0;i<blockSize;i++){
+                if (blocks.size()>0){
+                    outputBlock[realSize++] = blocks.get(0).topElement;
+                    refresh(blocks);  // Бинарный поиск, смещение и обновление верхнего элемента
+                } else break;
+            }
+            for (int i=0;i<realSize;i++){
+                outputPrintWriter.println(outputBlock[i]);
+            }
+            realSize = 0;
+        }
+        outputPrintWriter.close();
     }
 
     static void sort(String inFileName, String outFileName) throws IOException {
@@ -181,7 +320,7 @@ public class ExternalSort {
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         PrintWriter printNewFile;
-        int countOfFiles = 1;
+        int countOfFiles = 0;
         boolean flag = false;
         Integer [] arr = new Integer[MEMORY_SIZE];
         for (;!flag;countOfFiles++){
@@ -206,13 +345,18 @@ public class ExternalSort {
                     arr = newArr;
                 }
                 MergeSort.MergeSort(arr,0,sizeOfArr);
-                printNewFile = new PrintWriter(new FileOutputStream(new File(countOfFiles+"data.txt")));
+                printNewFile = new PrintWriter(new FileOutputStream(new File(countOfFiles+1+"data.txt")));
                 for (Integer integer:arr){
                     printNewFile.println(integer);
                 }
+                printNewFile.close();
+            }
+            else {
+                break;
             }
         }
         if (countOfFiles < MEMORY_SIZE){
+            MultiPathMerge(1,countOfFiles,outFileName);
             // Многопутевое слияние
         } else {
             int lastIndex = countOfFiles;
@@ -222,59 +366,24 @@ public class ExternalSort {
                 int mergingCount;
                 if (countOfExtraFiles >= countOfFiles / 2 )
                     mergingCount = 2* (countOfFiles / 2 );
-                else mergingCount = 2*(countOfExtraFiles / 2);
+                else mergingCount = 2*countOfExtraFiles;
                 int newIndex = startIndex + mergingCount -1;
                 for (int i  = startIndex + mergingCount -1; i>=startIndex;i-=2){
-                    BufferedReader bufferedReader1 = new BufferedReader(new FileReader(new File(i+"data.txt")));
-                    BufferedReader bufferedReader2 = new BufferedReader(new FileReader(new File((i-1)+"data.txt")));
+                    File file1 = new File (i+"data.txt");
+                    File file2 = new File((i-1)+"data.txt");
                     Path pathNewFile = Paths.get("").resolve(newIndex+"data.txt");
-                    mergeTwo(bufferedReader1,bufferedReader2,pathNewFile.toString());
+                    mergeTwo(file1,file2,pathNewFile.toString());
                     newIndex--;
                 }
                 startIndex = newIndex+1;
-
+                countOfFiles = lastIndex - startIndex + 1;
             }
             // Многопутевое слияние
-            int count = countOfFiles - startIndex + 1;
-            int blockSize = MEMORY_SIZE / (countOfFiles - startIndex + 2);
-
-            ArrayList<Block> blocks = new ArrayList<>();
-            for(int i = startIndex;i<=countOfFiles;i++){
-                BufferedReader bufferedReaderNew = new BufferedReader(new FileReader(new File(i+"data.txt")));
-                Block newBlock = new Block(bufferedReaderNew,new Integer [blockSize]);
-                blocks.add(newBlock);
-                String nextInt = bufferedReaderNew.readLine();
-                int currentSize = 0;
-                while (nextInt!=null){
-                    newBlock.intBlock[currentSize++] = Integer.parseInt(nextInt);
-                    nextInt = bufferedReaderNew.readLine();
-                }
-                newBlock.blockSize = currentSize;
-            }
-            blocks.sort(Comparator.comparing(x->x.topElement));
-            File outputFile = new File(outFileName);
-            PrintWriter outputPrintWriter = new PrintWriter(outputFile);
-            int [] outputBlock = new int[blockSize];
-            int realSize = 0;
-            while (blocks.size() > 0){
-                for (int i =0;i<blockSize;i++){
-                    if (blocks.size()>0){
-                        outputBlock[realSize++] = blocks.get(0).topElement;
-                        // Бинарный поиск
-                    } else break;
-                }
-                for (int i=0;i<realSize;i++){
-                    outputPrintWriter.println(outputBlock[i]);
-                }
-            }
-
-            
+            MultiPathMerge(startIndex,startIndex + countOfFiles-1,outFileName);
         }
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader1 = new BufferedReader(new FileReader((2+"data.txt")));
-        BufferedReader bufferedReader2 = new BufferedReader(new FileReader((1+"data.txt")));
-        mergeTwo(bufferedReader1,bufferedReader2,"3data.txt");
+        sort("data.txt","sorted.txt");
     }
 }
