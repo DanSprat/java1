@@ -1,4 +1,4 @@
-package ru.progwards.java1.lessons.sort;
+package ru.progwards.java2.lessons.sort;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -8,7 +8,7 @@ public class GenData {
     static void generate() {
         PrintWriter file = null;
         try {
-            file = new PrintWriter(new FileOutputStream(new File("data.txt")));
+            file = new PrintWriter(new FileOutputStream(("data.txt")));
             for(int i=0; i<200_000_000; i++)
                 file.println(ThreadLocalRandom.current().nextInt());
         } catch (Exception e) {

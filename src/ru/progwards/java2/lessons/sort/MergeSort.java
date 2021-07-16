@@ -1,9 +1,6 @@
-package ru.progwards.java1.lessons.sort;
-
-import ru.progwards.java2.lessons.patterns.IntegerFactory;
+package ru.progwards.java2.lessons.sort;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class MergeSort {
     public static <T extends Comparable<T>> void  MergeSort(T [] arr,int left,int right) {
@@ -51,11 +48,6 @@ public class MergeSort {
     }
 
     public static void main(String[] args) {
-        int arr [] = {1,5,9,2,6,3};
-        Integer intArr [] = Arrays.stream(arr).boxed().toArray(Integer[]::new);
-        MergeSort(intArr,0,arr.length);
-        for (var x: intArr){
-            System.out.print(x+ " ");
-        }
+
     }
 }

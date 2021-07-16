@@ -1,4 +1,4 @@
-package ru.progwards.java1.lessons.sort;
+package ru.progwards.java2.lessons.sort;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -345,7 +345,7 @@ public class ExternalSort {
                     arr = newArr;
                 }
                 MergeSort.MergeSort(arr,0,sizeOfArr);
-                printNewFile = new PrintWriter(new FileOutputStream(new File(countOfFiles+1+"data.txt")));
+                printNewFile = new PrintWriter(new FileOutputStream((countOfFiles+1+"data.txt")));
                 for (Integer integer:arr){
                     printNewFile.println(integer);
                 }
