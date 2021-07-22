@@ -314,7 +314,61 @@ public class Test1 {
 
         }
     }
+    static class Thread1 extends Thread{
+
+        private Integer integer;
+
+        public Thread1(Integer integer){
+            this.integer = integer;
+        }
+        @Override
+        public void run() {
+            synchronized (integer){
+                System.out.println("Thread 1 runned");
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Thread 1 ended");
+            }
+
+        }
+    }
+
+    static class Thread2 extends Thread{
+
+        private Integer integer;
+
+        public Thread2(Integer integer){
+            this.integer = integer;
+        }
+        @Override
+        public void run() {
+            synchronized (integer){
+                System.out.println("Thread 2 runned");
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Thread 2 ended");
+            }
+
+        }
+    }
+    public void changeString(String string){
+        string+=string;
+    }
+
     public static void main(String[] args) throws Exception {
+        Integer integer = 1;
+        Thread1 thread1 = new Thread1(integer);
+        Thread2 thread2 = new Thread2(integer);
+        thread1.start();
+        Thread.sleep(1000);
+        thread2.start();
+        Thread.sleep(10000);
         StringBuilder stringBuilder = new StringBuilder("");
         int a1= 100;
         int a2 = 4;
